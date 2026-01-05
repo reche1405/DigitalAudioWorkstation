@@ -11,6 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -23,7 +26,32 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(DigitalAudioWorkstation
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        globaltimeline.h globaltimeline.cpp globaltimeline.ui
+        widgets/globaltimeline.h widgets/globaltimeline.cpp widgets/globaltimeline.ui
+
+
+        graphics/tgraphicsview.h graphics/tgraphicsview.cpp
+
+        core/musictimemanager.h core/musictimemanager.cpp
+        core/musictime.h core/musictime.cpp
+        core/gridmanager.h core/gridmanager.cpp
+
+        audio/globalsamplemanager.h audio/globalsamplemanager.cpp
+        audio/audiostructs.h
+        audio/audioengine.h audio/audioengine.cpp
+        audio/audionode.h audio/audionode.cpp
+        audio/track.h audio/track.cpp
+        audio/audioparameter.h audio/audioparameter.cpp
+        audio/samplemanager.cpp
+        audio/samplemanager.h
+        graphics/basesceneclip.h graphics/basesceneclip.cpp
+        graphics/basegraphicstrack.h graphics/basegraphicstrack.cpp
+        graphics/audiographicstrack.h graphics/audiographicstrack.cpp
+        graphics/globalscene.h graphics/globalscene.cpp
+        graphics/audiosceneclip.h graphics/audiosceneclip.cpp
+        core/ringbuffer.h core/ringbuffer.cpp
+        core/transport.h core/transport.cpp
+
+
 
     )
 # Define target properties for Android with Qt 6 as:
@@ -44,7 +72,20 @@ else()
     endif()
 endif()
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(RT_AUDIO REQUIRED rtaudio)
+
+target_include_directories(DigitalAudioWorkstation PRIVATE ${RT_AUDIO_INCLUDE_DIRS})
+target_link_libraries(DigitalAudioWorkstation PRIVATE ${RT_AUDIO_LIBRARIES})
+
+target_link_libraries(DigitalAudioWorkstation PRIVATE asound pthread)
+
+target_link_libraries(DigitalAudioWorkstation PRIVATE sndfile)
+
 target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

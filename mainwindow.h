@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "core/musictimemanager.h"
+#include <memory.h>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -19,9 +20,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    int BPM;
+    float BPM;
     int SAMPLE_RATE;
     int BEATS_PER_BAR;
     int BEAT_LENGTH;
+    CoreUtils::MusicTimeManager* TIME_MANAGER;
+
 };
 #endif // MAINWINDOW_H
