@@ -9,12 +9,12 @@ class AudioParameter
 {
 
 protected:
-    ParamConstraints m_constraints;
+    CoreUtils::ParamConstraints m_constraints;
     float m_currentValue;
     std::atomic<float> m_targetValue;
     float m_coeff;
 public:
-    AudioParameter(ParamConstraints info);
+    AudioParameter(CoreUtils::ParamConstraints info);
     void updateSampleRate(double sr);
     float getNextValue();
     void setTarget(float value);

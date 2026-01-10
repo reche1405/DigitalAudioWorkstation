@@ -1,9 +1,9 @@
-#include "tgraphicsview.h"
+#include "arrangementview.h"
 #include <qevent.h>
 #include <QGraphicsItem>
 #include <QDebug>
 
-TGraphicsView::TGraphicsView(QGraphicsScene *scene, QWidget *parent, CoreUtils::GridManager& gridManagerRef)
+ArrangementView::ArrangementView(QGraphicsScene *scene, QWidget *parent, CoreUtils::GridManager& gridManagerRef)
     : QGraphicsView(scene, parent),
     m_gridManager(gridManagerRef)
 {
@@ -19,7 +19,7 @@ TGraphicsView::TGraphicsView(QGraphicsScene *scene, QWidget *parent, CoreUtils::
 
 }
 
-qreal TGraphicsView::getCurrentSpacing() const {
+qreal ArrangementView::getCurrentSpacing() const {
     qreal scaleX = transform().m11();
     qreal idealSpacing = 100.0;
     qreal currentSpacing = MajorGridSpacing;
@@ -36,7 +36,7 @@ qreal TGraphicsView::getCurrentSpacing() const {
     return currentSpacing;
 }
 
-void TGraphicsView::wheelEvent(QWheelEvent *event)
+void ArrangementView::wheelEvent(QWheelEvent *event)
 {
     // Check if Ctrl key is pressed for zooming
     if (event->modifiers() & Qt::ControlModifier) {
@@ -62,10 +62,10 @@ void TGraphicsView::wheelEvent(QWheelEvent *event)
     viewport()->update();
 }
 
-void TGraphicsView::drawBackground(QPainter *painter, const QRectF &rect) {
+void ArrangementView::drawBackground(QPainter *painter, const QRectF &rect) {
     //QTransform originalTransform = painter->worldTransform();
     //painter->setWorldTransform(transform());
-    m_gridManager.draw(painter, transform().m11(),rect.left(), rect.width());
+    m_gridManager.draw(painter, transform().m11(),rect.left(), rect.right());
 
     return;
 }

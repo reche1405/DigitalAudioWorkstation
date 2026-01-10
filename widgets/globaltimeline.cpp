@@ -2,10 +2,13 @@
 #include "ui_globaltimeline.h"
 #include <QVBoxLayout>
 #include <QRect>
-
+#include <QTimer>
+#include "../core/math.h"
 GlobalTimeLine::GlobalTimeLine(QWidget *parent, float bpm, int beatsPerBar, int beatLength, int sampleRate)
     : QWidget(parent)
     , ui(new Ui::GlobalTimeLine),
+    m_masterBuffer(2048, 0.0f),
+    m_trackBuffer(2048, 0.0f),
     m_audioEngine(new Audio::AudioEngine())
 {
     ui->setupUi(this);
@@ -14,6 +17,26 @@ GlobalTimeLine::GlobalTimeLine(QWidget *parent, float bpm, int beatsPerBar, int 
     this->m_beatLength = beatLength;
     this->m_sampleRate = sampleRate;
     setupScene();
+
+
+    // In GlobalTimeline Constructor
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, [this]() {
+        if(!m_audioEngine->transport().isPlaying()) {
+            return;
+        }
+
+
+        // Try to keep the buffer filled up to a certain point
+        size_t targetLevel = 8192; // 2048 stereo frames
+        size_t currentLevel = m_audioEngine->ringBuffer().availableSamples() / 2;
+        updatePlayheadPosition();
+
+        if (currentLevel < targetLevel) {
+            update();
+        }
+    });
+    timer->start(10);
 
 }
 
@@ -28,14 +51,14 @@ void GlobalTimeLine::setupScene()
 
 
     // Start early stage testing purposes.
-    QString firstKickPath = QString::fromStdString("/home/reche/samples/kick1.wav");
+    QString firstKickPath = QString::fromStdString("/home/reche/samples/vocal.wav");
     std::shared_ptr<Audio::AudioAsset> sample =  m_sampler.loadSample(firstKickPath);
 
 
 
     Audio::AudioClip clip;
     clip.asset = sample;
-    clip.globalStartFrame = 88200;
+    clip.globalStartFrame = 0;
     clip.localStartFrame = 0;
     clip.localEndFrame = sample->totalSamples / sample->channels;
 
@@ -43,20 +66,43 @@ void GlobalTimeLine::setupScene()
         audioTrack->getSampler().addClip(clip);
     }
 
+
     // End early stage testing purposes.
+
+
     m_scene = new GlobalScene(this);
-    m_view = new TGraphicsView(m_scene, this);
+    m_view = new ArrangementView(m_scene, this);
+
     m_scene->setSceneRect(0,0,this->geometry().width() * 4,this->geometry().height());
+    m_playhead = new Graphics::Playhead(m_scene->height(), nullptr);
     m_scene->syncWithTracks(m_tracks);
     m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_view->setTransformationAnchor(QGraphicsView::NoAnchor);
-    m_scene->setBackgroundBrush(Qt::darkGray);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(QColor(24,24,24, 255));
+    m_view->setBackgroundBrush(brush);
+    m_scene->addItem(m_playhead);
     // m_scene->addText("Hello world from the timeline!");
     // m_scene-> addRect(QRect(0,0,500, 70));
     m_view->setScene(m_scene);
 
 
     mainLayout->addWidget(m_view);
+
+}
+void GlobalTimeLine::play() {
+    m_audioEngine->play();
+
+}
+void GlobalTimeLine::initAudio() {
+
+    if(!(m_audioEngine->openDevice(1, m_sampleRate, 1024))) {
+        qWarning() << "Error opening device";
+    } else {
+        qDebug() << "Device opened: 1" ;
+    }
+    ;
 }
 GlobalTimeLine::~GlobalTimeLine()
 {
@@ -73,22 +119,62 @@ void GlobalTimeLine::addNewTrack(Audio::TrackType type) {
 }
 
 void GlobalTimeLine::mixMasterBuffer(uint32_t numFrames) {
-    std::vector<float> masterBuffer;
-    std::vector<float> trackBuffer;
-    masterBuffer.resize(numFrames * 2);
-    trackBuffer.resize(numFrames * 2);
+    if(!m_audioEngine->transport().isPlaying()) {
+        return;
+    }
+    int64_t playhead = m_audioEngine->transport().getCurrentFrame();
+    int64_t waiting = m_audioEngine->ringBuffer().availableSamples() / 2;
+    int64_t writePos = playhead + waiting;
+    size_t samplesToProcess = numFrames * 2;
     for (auto& t : m_tracks) {
-        std::fill(trackBuffer.begin(), trackBuffer.end(), 0.0f);
+        std::fill(m_trackBuffer.begin(), m_trackBuffer.begin() + samplesToProcess , 0.0f);
         // TODO: pass the current frame from this globaltimeline manager: URGENT
-        t->process(trackBuffer, m_currentPlayheadFrame);
+        t->process(m_trackBuffer, writePos);
 
-
-        for(int i = 0; i < masterBuffer.size(); i++) {
-            masterBuffer[i] += trackBuffer[i];
+        for(int i = 0; i < m_masterBuffer.size(); i++) {
+          m_masterBuffer[i] += m_trackBuffer[i];
         }
     }
     // Master bus and gain staging can happen here.
 
+    // 3. Apply Gain Staging (e.g., -6dB is roughly 0.5f)
+    float leftGain = 0.5f;
+    float rightGain = 0.5f;
+
+    for (uint32_t i = 0; i < numFrames; ++i) {
+        // Interleaved L/R
+        m_masterBuffer[i * 2]     *= leftGain;  // Left
+        m_masterBuffer[i * 2 + 1] *= rightGain; // Right
+
+        // Hard Limiter (Simple protection)
+        m_masterBuffer[i * 2]     = std::clamp(m_masterBuffer[i * 2], -1.0f, 1.0f);
+        m_masterBuffer[i * 2 + 1] = std::clamp(m_masterBuffer[i * 2 + 1], -1.0f, 1.0f);
+    }
+
+    // 4. Push to Ring Buffer
+    // We try to push the entire block. If it returns less than numFrames*2,
+    // it means the ring buffer is full (the audio engine is falling behind).
+    size_t pushed = m_audioEngine->ringBuffer().pushBlock(m_masterBuffer.data(), numFrames * 2);
+
+}
+
+void GlobalTimeLine::update() {
+    size_t safetyMargin = 8192; // How many frames we want waiting in the pipe
+    int safetyCounter = 0;
+    while ((m_audioEngine->ringBuffer().availableSamples() / 2) < safetyMargin && safetyCounter < 20) {
+        mixMasterBuffer(512); // Process in blocks of 512
+        safetyCounter++;
+    }
+}
+
+void GlobalTimeLine::updatePlayheadPosition()
+{
+    int64_t currentFrame = m_audioEngine->transport().getCurrentFrame();
+    double xPos = m_view->gridManager().framesToXPos(currentFrame,1.0,0.0);
+    double t = 0.5;
+    m_visualX = CoreUtils::Math::lerp(xPos, m_visualX, t);
+    m_playhead->setPos(m_visualX, 0);
+    m_view->update();
 }
 void GlobalTimeLine::addNewAudioTrack() {
 
@@ -99,3 +185,5 @@ void GlobalTimeLine::addNewAudioTrack() {
 qreal GlobalTimeLine::getTrackHeightSum() {
     return 1;
 }
+
+

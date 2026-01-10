@@ -1,14 +1,16 @@
-#ifndef TGRAPHICSVIEW_H
-#define TGRAPHICSVIEW_H
+#ifndef ARRANGEMENTVIEW_H
+#define ARRANGEMENTVIEW_H
 
 #include <QGraphicsView>
 #include <QWidget>
 #include "../core/gridmanager.h"
-class TGraphicsView : public QGraphicsView
+class ArrangementView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit TGraphicsView(QGraphicsScene *scene, QWidget *parent = nullptr, CoreUtils::GridManager& gridManagerRef = CoreUtils::GridManager::instance());
+    explicit ArrangementView(QGraphicsScene *scene, QWidget *parent = nullptr, CoreUtils::GridManager& gridManagerRef = CoreUtils::GridManager::instance());
+    CoreUtils::GridManager& gridManager() const {return m_gridManager;}
+
 protected:
     void drawBackground(QPainter *painter, const QRectF &rect) override;
     void wheelEvent(QWheelEvent *event) override;
@@ -21,4 +23,4 @@ private:
     qreal getCurrentSpacing() const;
 };
 
-#endif // TGRAPHICSVIEW_H
+#endif // ARRANGEMENTVIEW_H

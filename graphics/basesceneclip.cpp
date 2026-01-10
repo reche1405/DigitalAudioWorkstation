@@ -1,5 +1,5 @@
 #include "basesceneclip.h"
-#include "tgraphicsview.h"
+#include "arrangementview.h"
 #include <qgraphicsscene.h>
 #include <qpainter.h>
 namespace Graphics {
@@ -11,6 +11,7 @@ BaseSceneClip::BaseSceneClip(qreal x, qreal y, qreal width, qreal height, QColor
     m_color = color;
     this->setPos(x, y);
     this->setRect(0,0,width, height);
+    setZValue(5);
 }
 void BaseSceneClip::drawBackground(QPainter* painter) {
     QRectF rect = this->rect();

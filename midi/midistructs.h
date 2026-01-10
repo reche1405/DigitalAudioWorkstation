@@ -1,0 +1,4 @@
+#ifndef MIDISTRUCTS_H
+#define MIDISTRUCTS_H
+
+#endif // MIDISTRUCTS_H

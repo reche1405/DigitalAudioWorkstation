@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "QString"
+#include "../core/structs.h"
 namespace Audio {
 
     struct AudioBuffer {
@@ -18,32 +19,22 @@ namespace Audio {
         std::vector<std::vector<float>> plots;
 
     };
-    struct AudioAsset {
+    struct AudioAsset : public CoreUtils::Asset {
         // An asset stored in the global sample manager that can be referenced locally by tracks.
-        QString fileName;
-        QString path;
-        double durationSeconds;
         int totalSamples;
         int sampleRate;
         int channels;
-        bool online = true;
         bool stereoIdentical = true;
         std::shared_ptr<AudioBuffer> audioData;
         ChannelPlot visualWavePoints;
 
+        CoreUtils::AssetType type() const override {
+            return CoreUtils::AssetType::Audio;
+        }
+
     };
 
-    enum class ParameterType { Continuous, Stepped, Toggle };
-    enum class ParamMapping { Linear, Logarithmic };
-    struct ParamConstraints {
-        ParameterType type;
-        float min = 0.0f;
-        float max = 1.0f;
-        float rampTimeMs = 20.0f;
-        unsigned int steps = 0;
 
-        ParamMapping mapping;
-    };
     struct AudioClip {
         // The logical structure for an audio clip in the track timeline.
         std::shared_ptr<AudioAsset> asset;

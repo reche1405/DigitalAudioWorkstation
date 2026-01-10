@@ -2,7 +2,10 @@
 #include "audiographicstrack.h"
 GlobalScene::GlobalScene(QObject *parent)
     : QGraphicsScene(parent)
+
+
 {
+
 
 }
 
@@ -41,6 +44,7 @@ void GlobalScene::syncWithTracks(const std::vector<std::unique_ptr<Audio::BaseTr
         }
     }
 }
+
 qreal GlobalScene::trackHeightSum() {
     qreal heightSum = 0;
     std::map<int, BaseGraphicsTrack&>::iterator it;

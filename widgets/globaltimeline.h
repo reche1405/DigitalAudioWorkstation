@@ -4,12 +4,13 @@
 #include <QWidget>
 #include <QGraphicsView>
 #include <QGraphicsWidget>
-#include "../graphics/tgraphicsview.h"
+#include "../graphics/arrangementview.h"
 #include "../audio/track.h"
 #include "../audio/audiostructs.h"
 #include "../audio/globalsamplemanager.h"
 #include "../audio/audioengine.h"
 #include "../graphics/globalscene.h"
+#include "../graphics/playhead.h"
 namespace Ui {
 class GlobalTimeLine;
 }
@@ -25,7 +26,7 @@ public:
         );
 
     virtual ~GlobalTimeLine();
-    TGraphicsView* view() const {return m_view; }
+    ArrangementView* view() const {return m_view; }
     QGraphicsScene* scene() const {return m_scene; }
     void setBPM(float bpm);
     void setTimeSignature(int beatsPerBar, int beatLength);
@@ -41,18 +42,29 @@ public:
     void addNewAudioTrack();
     // void addNewMidiTrack();
     qreal getTrackHeightSum();
+    void setupScene();
+    void play();
+    void initAudio();
+    void update();
+
+    Audio::AudioEngine& audioEngine() const {return *m_audioEngine; }
+    void updatePlayheadPosition();
+
+
 private:
     Ui::GlobalTimeLine *ui;
-    TGraphicsView *m_view;
+    ArrangementView *m_view;
     GlobalScene *m_scene;
-    void setupScene();
     float m_BPM;
     int m_beatsPerBar;
     int m_beatLength;
     int m_sampleRate;
     Audio::AudioEngine *m_audioEngine;
     size_t m_currentPlayheadFrame = 0;
-
+    double m_visualX = 0.0;
+    std::vector<float> m_masterBuffer;
+    std::vector<float> m_trackBuffer;
+    Graphics::Playhead *m_playhead;
     std::vector<std::unique_ptr<Audio::BaseTrack>> m_tracks;
 };
 

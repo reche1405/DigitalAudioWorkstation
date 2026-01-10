@@ -7,6 +7,7 @@
 #include <QGraphicsScene>
 #include "basegraphicstrack.h"
 
+
 class GlobalScene : public QGraphicsScene
 {
 public:
@@ -32,6 +33,7 @@ public slots:
 
 private:
     std::map<int ,BaseGraphicsTrack&> m_guiTracks;
+
 };
 
 #endif // GLOBALSCENE_H

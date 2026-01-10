@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "core/musictimemanager.h"
 #include <memory.h>
+#include "widgets/globaltimeline.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -17,9 +18,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void setupTransportControls();
+    void handleTogglePlay();
 private:
     Ui::MainWindow *ui;
+    GlobalTimeLine* m_timeline;
     float BPM;
     int SAMPLE_RATE;
     int BEATS_PER_BAR;

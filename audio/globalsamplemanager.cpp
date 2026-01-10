@@ -41,6 +41,7 @@ namespace Audio {
             asset->fileName = info.fileName();
             asset->totalSamples = static_cast<int>(sfInfo.frames * sfInfo.channels);
             asset->sampleRate = sfInfo.samplerate;
+            qDebug() << "Asset sample rate: " << sfInfo.samplerate;
             asset->channels = sfInfo.channels;
             asset->online = true;
             asset->durationSeconds = static_cast<double>(sfInfo.frames) / sfInfo.samplerate;

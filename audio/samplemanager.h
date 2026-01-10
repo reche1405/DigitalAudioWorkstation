@@ -9,6 +9,7 @@ class SampleManager
 {
 private:
     std::vector<AudioClip> m_clips;
+    uint32_t m_projectSampleRate = 44100;
 public:
     SampleManager();
     void addClip(AudioClip clip) {
@@ -23,6 +24,7 @@ public:
     void setLocalEndFrame(AudioClip clip, size_t endFrame);
     void process(std::vector<float>& buffer, size_t currentGlobalFrame, int numChannels);
     void mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer, size_t bufferOffset, size_t assetStartFrame, int numChannels);
+    void prepare(uint32_t sampleRate);
 };
 
 } // namespace Audio

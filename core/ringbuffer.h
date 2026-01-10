@@ -49,6 +49,39 @@ template < typename T >
             return true;
         }
 
+        // Pushes multiple samples into the buffer
+                size_t pushBlock(const T* data, size_t count) {
+            size_t head = m_head.load(std::memory_order_relaxed);
+            size_t tail = m_tail.load(std::memory_order_acquire);
+
+            // Calculate how much space is actually available
+            size_t available = (tail - head - 1) & m_mask;
+            size_t toWrite = std::min(count, available);
+
+            for (size_t i = 0; i < toWrite; ++i) {
+                m_buffer[(head + i) & m_mask] = data[i];
+            }
+
+            m_head.store((head + toWrite) & m_mask, std::memory_order_release);
+            return toWrite; // Return how many we actually managed to push
+        }
+
+        // Pops multiple samples out of the buffer
+        size_t popBlock(T* data, size_t count) {
+            size_t head = m_head.load(std::memory_order_acquire);
+            size_t tail = m_tail.load(std::memory_order_relaxed);
+
+            size_t available = (head - tail) & m_mask;
+            size_t toRead = std::min(count, available);
+
+            for (size_t i = 0; i < toRead; ++i) {
+                data[i] = m_buffer[(tail + i) & m_mask];
+            }
+
+            m_tail.store((tail + toRead) & m_mask, std::memory_order_release);
+            return toRead; // Return how many we actually popped
+        }
+
         size_t availableSamples() const {
             size_t head = m_head.load(std::memory_order_acquire);
             size_t tail = m_tail.load(std::memory_order_acquire);

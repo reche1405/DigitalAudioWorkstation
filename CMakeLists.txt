@@ -29,7 +29,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         widgets/globaltimeline.h widgets/globaltimeline.cpp widgets/globaltimeline.ui
 
 
-        graphics/tgraphicsview.h graphics/tgraphicsview.cpp
+        graphics/arrangementview.h graphics/arrangementview.cpp
 
         core/musictimemanager.h core/musictimemanager.cpp
         core/musictime.h core/musictime.cpp
@@ -50,6 +50,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         graphics/audiosceneclip.h graphics/audiosceneclip.cpp
         core/ringbuffer.h core/ringbuffer.cpp
         core/transport.h core/transport.cpp
+        core/math.h
+        graphics/playhead.h graphics/playhead.cpp
+        graphics/timelineselector.h graphics/timelineselector.cpp
+        core/structs.h core/structs.cpp
+        midi/midistructs.h
 
 
 

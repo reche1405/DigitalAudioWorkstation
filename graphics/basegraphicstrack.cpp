@@ -15,6 +15,8 @@ BaseGraphicsTrack::BaseGraphicsTrack(int index, qreal x, qreal y, qreal width, q
     this->setFlags(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
     setTitle(QString::fromStdString("Track " + QString::number(index).toStdString() ));
     m_index = index;
+
+    setZValue(m_index);
 }
 void BaseGraphicsTrack::drawBackground(QPainter* painter) {
     QRectF rect = this->rect();
