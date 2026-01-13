@@ -35,6 +35,7 @@ void SampleManager::process(std::vector<float>& buffer, size_t currentGlobalFram
 
 void SampleManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer,
         size_t bufferOffset, size_t assetStart, int numChannels) {
+    CoreUtils::MusicTimeManager& manager = CoreUtils::MusicTimeManager::instance();
     const auto& samples = clip.asset->audioData->samples;
     int assetChannels = clip.asset->channels;
 
@@ -49,8 +50,8 @@ void SampleManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& b
         size_t indexA = static_cast<size_t>(sourceFrame);
         size_t indexB = indexA + 1;
         float fraction = static_cast<float>(sourceFrame - indexA);
-
-        if(indexA >= clip.localEndFrame || (indexB * assetChannels) >= samples.size()) break;
+        size_t clipLocalEndFrame = manager.getLocalEndFrame(clip);
+        if(indexA >= clipLocalEndFrame || (indexB * assetChannels) >= samples.size()) break;
         for(int ch = 0; ch < numChannels; ++ch) {
             int assetCh = (ch < assetChannels) ? ch : 0;
 

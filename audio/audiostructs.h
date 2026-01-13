@@ -37,6 +37,7 @@ namespace Audio {
 
     struct AudioClip : public CoreUtils::Clip {
         // The logical structure for an audio clip in the track timeline.
+        std::shared_ptr<AudioAsset> asset;
         float gain = 1.0f;
         int64_t fadeInTicks = 0;
         int64_t fadeOutTicks = 0;
