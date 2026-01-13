@@ -12,9 +12,9 @@ namespace Audio {
     public:
         GlobalSampleManager();
 
-        std::shared_ptr<AudioAsset> loadSample(QString& path);
+        std::shared_ptr<AudioAsset> loadAsset(QString& path);
         bool assetExists(QString& path);
-        void plotWaveForm(std::shared_ptr<AudioAsset> asset);
+        void plotVisualisation(std::shared_ptr<AudioAsset> asset);
 
     };
 

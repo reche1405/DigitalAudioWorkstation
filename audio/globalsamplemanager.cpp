@@ -11,7 +11,7 @@ namespace Audio {
         return !(m_assetCache.find(path) == m_assetCache.end());
     }
 
-    std::shared_ptr<AudioAsset> GlobalSampleManager::loadSample(QString& path) {
+    std::shared_ptr<AudioAsset> GlobalSampleManager::loadAsset(QString& path) {
 
         // Load a sample when passed an audio file into the cache.
 
@@ -60,7 +60,7 @@ namespace Audio {
 
 
             // create the plot point data here
-            plotWaveForm(asset);
+            plotVisualisation(asset);
 
             m_assetCache[path] = asset;
             return asset;
@@ -68,7 +68,7 @@ namespace Audio {
         }
     }
 
-    void GlobalSampleManager::plotWaveForm(std::shared_ptr<AudioAsset> asset) {
+    void GlobalSampleManager::plotVisualisation(std::shared_ptr<AudioAsset> asset) {
         int desiredRes = 100;
         int channels = asset->channels;
         asset->visualWavePoints.plots.resize(channels);

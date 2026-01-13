@@ -59,7 +59,6 @@ struct MidiPlot {
 
 struct MidiAsset : public CoreUtils::Asset {
     std::shared_ptr<MidiAsset> asset;
-    int ppq;
     double durationTicks;
     MidiSequence data;
     MidiPlot visualPlot;

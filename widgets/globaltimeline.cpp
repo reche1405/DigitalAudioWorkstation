@@ -52,7 +52,7 @@ void GlobalTimeLine::setupScene()
 
     // Start early stage testing purposes.
     QString firstKickPath = QString::fromStdString("/home/reche/samples/vocal.wav");
-    std::shared_ptr<Audio::AudioAsset> sample =  m_sampler.loadSample(firstKickPath);
+    std::shared_ptr<Audio::AudioAsset> sample =  m_sampler.loadAsset(firstKickPath);
 
 
 
