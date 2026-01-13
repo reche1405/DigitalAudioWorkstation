@@ -31,6 +31,9 @@ struct Clip {
     int64_t globalEndTick() const {
         return globalStartTick + localEndTick;
     }
+    int64_t getTotalTicks() const {
+        return  localEndTick - localStartTick;
+    }
 
 };
 
