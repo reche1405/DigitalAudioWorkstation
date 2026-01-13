@@ -35,17 +35,12 @@ namespace Audio {
     };
 
 
-    struct AudioClip {
+    struct AudioClip : public CoreUtils::Clip {
         // The logical structure for an audio clip in the track timeline.
-        std::shared_ptr<AudioAsset> asset;
-        size_t globalStartFrame;
-        size_t localStartFrame;
-        size_t localEndFrame;
-        size_t getTotalFrames() const {return localEndFrame - localStartFrame; }
+        float gain = 1.0f;
+        int64_t fadeInTicks = 0;
+        int64_t fadeOutTicks = 0;
 
-        bool operator<(AudioClip other) const {
-            return globalStartFrame < other.globalStartFrame;
-        }
     };
 
     enum class TrackType{Audio, MIDI};

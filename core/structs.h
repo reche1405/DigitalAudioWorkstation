@@ -19,6 +19,22 @@ struct Asset {
 
 };
 
+struct Clip {
+    virtual ~Clip() = default;
+    std::shared_ptr<Asset> asset;
+    int64_t globalStartTick;
+    int64_t localStartTick;
+    int64_t localEndTick;
+
+    bool operator<(Clip other) {
+        return globalStartTick < other.globalStartTick;
+    }
+    int64_t globalEndTick() const {
+        return globalStartTick + localEndTick;
+    }
+
+};
+
 
 
 enum class ParameterType { Continuous, Stepped, Toggle };

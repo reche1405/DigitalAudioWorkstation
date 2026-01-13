@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "musictime.h"
+#include "structs.h"
 namespace CoreUtils {
     class MusicTimeManager
     {
@@ -36,7 +37,10 @@ namespace CoreUtils {
         // We then need to find out how many ticks there are
         MusicTime ticksToNotation(int64_t totalTicks);
         int64_t framesToTicks(int totalFrames);
-
+        size_t ticksToFrames(int64_t totalTicks);
+        size_t getGlobalStartFrame(const Clip& clip);
+        size_t getLocalEndFrame(const Clip& clip);
+        size_t getGlobalEndFrame(const Clip& clip);
 
         MusicTime msToNotation(float ms);
         float notationToMs(MusicTime mt);

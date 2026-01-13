@@ -59,6 +59,7 @@ private:
     int m_beatsPerBar;
     int m_beatLength;
     int m_sampleRate;
+    int64_t m_ppq = 960;
     Audio::AudioEngine *m_audioEngine;
     size_t m_currentPlayheadFrame = 0;
     double m_visualX = 0.0;

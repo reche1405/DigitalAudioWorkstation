@@ -48,6 +48,28 @@ namespace CoreUtils {
         return static_cast<int64_t>(frames + 0.5f);
     }
 
+    size_t MusicTimeManager::ticksToFrames(int64_t totalTicks)
+    {
+        double seconds = (double)totalTicks / (m_bpm / 60.0f * m_pointsPerQuarter);
+        return static_cast<size_t>(seconds * m_sampleRate);
+
+    }
+
+    size_t MusicTimeManager::getGlobalStartFrame(const Clip &clip)
+    {
+        return ticksToFrames(clip.globalStartTick);
+    }
+
+    size_t MusicTimeManager::getLocalEndFrame(const Clip &clip)
+    {
+        return ticksToFrames(clip.localEndTick);
+    }
+
+    size_t MusicTimeManager::getGlobalEndFrame(const Clip &clip)
+    {
+        return ticksToFrames(clip.globalEndTick());
+    }
+
 
 
 

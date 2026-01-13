@@ -58,9 +58,11 @@ void GlobalTimeLine::setupScene()
 
     Audio::AudioClip clip;
     clip.asset = sample;
-    clip.globalStartFrame = 0;
-    clip.localStartFrame = 0;
-    clip.localEndFrame = sample->totalSamples / sample->channels;
+    clip.globalStartTick = 0;
+    clip.localStartTick = 0;
+    double durationSeconds = clip.asset->durationSeconds;
+
+    clip.localEndTick = static_cast<int64_t>(durationSeconds * (m_BPM / 60.0f) * m_ppq);
 
     if(auto audioTrack = dynamic_cast<Audio::AudioTrack*>(m_tracks.at(0).get()))   {
         audioTrack->getSampler().addClip(clip);

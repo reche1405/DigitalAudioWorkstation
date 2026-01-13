@@ -1,5 +1,6 @@
 #include "samplemanager.h"
 #include "../core/math.h"
+#include "../core/musictimemanager.h"
 namespace Audio {
 
 SampleManager::SampleManager() {}
@@ -11,17 +12,21 @@ void SampleManager::process(std::vector<float>& buffer, size_t currentGlobalFram
     // TODO: We will now need to add the m_nextPotentialClipIndex
     // TODO: And add a seek function so that when the user stops the song or moves the playhead,
     // TODO: The value is set to zero, so all samples can be inspected to find the next source.
+
+    CoreUtils::MusicTimeManager& manager = CoreUtils::MusicTimeManager::instance();
+
     size_t globalEndFrame = currentGlobalFrame + bufferSizeFrames;
     for(const auto& clip : m_clips) {
 
-        size_t clipEndFrame = clip.globalStartFrame + clip.getTotalFrames();
-        if(clip.globalStartFrame < globalEndFrame && clipEndFrame > currentGlobalFrame) {
-            size_t bufferOffset = (clip.globalStartFrame > currentGlobalFrame)
-                                      ? clip.globalStartFrame - currentGlobalFrame : 0;
-            size_t clipReadOffset = (currentGlobalFrame > clip.globalStartFrame)
-                                      ? currentGlobalFrame - clip.globalStartFrame : 0;
+        size_t clipEndFrame = manager.getGlobalEndFrame(clip);
+        size_t clipGlobalStartFrame = manager.getGlobalStartFrame(clip);
+        if(clipGlobalStartFrame < globalEndFrame && clipEndFrame > currentGlobalFrame) {
+            size_t bufferOffset = (clipGlobalStartFrame > currentGlobalFrame)
+                                      ? clipGlobalStartFrame - currentGlobalFrame : 0;
+            size_t clipReadOffset = (currentGlobalFrame > clipGlobalStartFrame)
+                                      ? currentGlobalFrame - clipGlobalStartFrame : 0;
 
-            size_t assetStartFrame = clip.localStartFrame + clipReadOffset;
+            size_t assetStartFrame = clipGlobalStartFrame + clipReadOffset;
             mixClipToBuffer(clip, buffer, bufferOffset, assetStartFrame, numChannels);
         }
 
