@@ -9,12 +9,6 @@ namespace Midi {
 class ProjectMidiClipManager : public Core::ProjectAssetManager
 {
 public:
-    ProjectMidiClipManager() :
-        ProjectAssetManager() ,
-        m_parser(new  MidiParser())
-    {
-
-    }
     virtual ~ProjectMidiClipManager() = default;
     bool loadAsset(QString& path) override {
         std::string strPath = path.toStdString();
@@ -23,7 +17,7 @@ public:
         return true;
     }
 private:
-    MidiParser* m_parser;
+    MidiParser m_parser;
 };
 
 } // namespace Midi
