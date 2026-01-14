@@ -1,6 +1,6 @@
 #include "transport.h"
 
-namespace CoreUtils {
+namespace Core {
 
 Transport::Transport() {}
 void Transport::toggleLoop() {

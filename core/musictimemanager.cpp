@@ -1,6 +1,6 @@
 #include "musictimemanager.h"
 #include "QDebug"
-namespace CoreUtils {
+namespace Core {
 
     MusicTimeManager::MusicTimeManager() {
         //float bpm,

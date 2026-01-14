@@ -1,19 +1,19 @@
-#ifndef GLOBALSAMPLEMANAGER_H
-#define GLOBALSAMPLEMANAGER_H
+#ifndef PROJECTSAMPLEMANAGER_H
+#define PROJECTSAMPLEMANAGER_H
 #include "sndfile.h"
 #include <QFileInfo>
 
 #include "audiostructs.h"
-#include "../core/globalassetmanager.h"
+#include "../core/projectassetmanager.h"
 namespace Audio {
 
-class GlobalSampleManager : public CoreUtils::GlobalAssetManager
+class ProjectSampleManager : public Core::ProjectAssetManager
     {
     private:
         // The a cache of entries: filename alongside a shared pointer to the audio asset
         //std::map<QString, std::shared_ptr<AudioAsset>> m_assetCache;
     public:
-        virtual ~GlobalSampleManager() = default;
+        virtual ~ProjectSampleManager() = default;
 
 
         bool loadAsset(QString& path) override {
@@ -89,4 +89,4 @@ class GlobalSampleManager : public CoreUtils::GlobalAssetManager
     };
 
 }
-#endif // GLOBALSAMPLEMANAGER_H
+#endif // PROJECTSAMPLEMANAGER_H

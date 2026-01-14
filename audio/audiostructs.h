@@ -19,7 +19,7 @@ namespace Audio {
         std::vector<std::vector<float>> plots;
 
     };
-    struct AudioAsset : public CoreUtils::Asset {
+    struct AudioAsset : public Core::Asset {
         // An asset stored in the global sample manager that can be referenced locally by tracks.
         int totalSamples;
         int sampleRate;
@@ -28,14 +28,14 @@ namespace Audio {
         std::shared_ptr<AudioBuffer> audioData;
         ChannelPlot visualWavePoints;
 
-        CoreUtils::AssetType type() const override {
-            return CoreUtils::AssetType::Audio;
+        Core::AssetType type() const override {
+            return Core::AssetType::Audio;
         }
 
     };
 
 
-    struct AudioClip : public CoreUtils::Clip {
+    struct AudioClip : public Core::Clip {
         // The logical structure for an audio clip in the track timeline.
         std::shared_ptr<AudioAsset> asset;
         float gain = 1.0f;

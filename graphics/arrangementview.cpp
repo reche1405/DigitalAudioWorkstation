@@ -3,7 +3,7 @@
 #include <QGraphicsItem>
 #include <QDebug>
 
-ArrangementView::ArrangementView(QGraphicsScene *scene, QWidget *parent, CoreUtils::GridManager& gridManagerRef)
+ArrangementView::ArrangementView(QGraphicsScene *scene, QWidget *parent, Core::GridManager& gridManagerRef)
     : QGraphicsView(scene, parent),
     m_gridManager(gridManagerRef)
 {
@@ -14,8 +14,8 @@ ArrangementView::ArrangementView(QGraphicsScene *scene, QWidget *parent, CoreUti
     m_gridManager.setInterval();
     m_gridManager.setDefaultMajorIntervalPix();
     m_gridManager.setMinorIntCount();
-    m_gridManager.setPen(QPen(QColor(170, 170, 170), 1.0 ), CoreUtils::LineType::MAJOR);
-    m_gridManager.setPen(QPen(QColor(140, 140, 140), 0.25 ), CoreUtils::LineType::MINOR);
+    m_gridManager.setPen(QPen(QColor(170, 170, 170), 1.0 ), Core::LineType::MAJOR);
+    m_gridManager.setPen(QPen(QColor(140, 140, 140), 0.25 ), Core::LineType::MINOR);
 
 }
 

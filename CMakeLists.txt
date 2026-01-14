@@ -35,7 +35,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/musictime.h core/musictime.cpp
         core/gridmanager.h core/gridmanager.cpp
 
-        audio/globalsamplemanager.h audio/globalsamplemanager.cpp
+        audio/projectsamplemanager.h audio/projectsamplemanager.cpp
         audio/audiostructs.h
         audio/audioengine.h audio/audioengine.cpp
         audio/audionode.h audio/audionode.cpp
@@ -55,7 +55,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         graphics/timelineselector.h graphics/timelineselector.cpp
         core/structs.h core/structs.cpp
         midi/midistructs.h
-        core/globalassetmanager.h core/globalassetmanager.cpp
+        core/projectassetmanager.h core/projectassetmanager.cpp
+        midi/projectmidiclipmanager.h midi/projectmidiclipmanager.cpp
+        midi/midiparser.h midi/midiparser.cpp
 
 
 

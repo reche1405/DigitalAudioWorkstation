@@ -7,7 +7,7 @@
 #include "QString"
 #include "QPen"
 
-namespace CoreUtils {
+namespace Core {
     // The type of vertical grid line
     enum LineType : int {
         MAJOR  = 1,

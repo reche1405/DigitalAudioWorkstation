@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <QString>
-namespace CoreUtils {
+namespace Core {
 enum AssetType {Audio, MIDI};
 
 

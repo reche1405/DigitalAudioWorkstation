@@ -1,5 +1,5 @@
 #include "musictime.h"
-namespace CoreUtils {
+namespace Core {
     MusicTime::MusicTime(int64_t bar, int beat, int count, int tick) {
         m_bar = bar;
         m_beat = beat;

@@ -15,7 +15,7 @@ AudioSceneClip::AudioSceneClip(qreal x, qreal y, qreal width, qreal height, QCol
 void AudioSceneClip::drawContent(QPainter* painter) {
 
     const int lanes = m_data->stereoIdentical ? 1 : m_data->channels;
-    CoreUtils::GridManager& gridManager = CoreUtils::GridManager::instance();
+    Core::GridManager& gridManager = Core::GridManager::instance();
     QRectF rect = QRectF(0,0,this->rect().width(),this->rect().height());
     QFont font = painter->font();
     gridManager.drawScaledText(painter, rect.left() + 5 /painter->transform().m11() , rect.top() + 9, m_data->fileName, painter->transform().m11());

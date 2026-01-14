@@ -10,8 +10,8 @@ namespace Audio {
     {
     public:
         AudioEngine() :
-            m_ringBuffer(new CoreUtils::RingBuffer<float>(16384 * 2)),
-            m_transport(new CoreUtils::Transport()) {
+            m_ringBuffer(new Core::RingBuffer<float>(16384 * 2)),
+            m_transport(new Core::Transport()) {
 
             // Open the default output device and
             // If there is an error then print to the console.
@@ -31,15 +31,15 @@ namespace Audio {
         void play() const {m_transport->play();}
         void pause() const {m_transport->pause();}
 
-        CoreUtils::Transport& transport() const {return *m_transport;}
-        CoreUtils::RingBuffer<float>& ringBuffer() const {return *m_ringBuffer;}
+        Core::Transport& transport() const {return *m_transport;}
+        Core::RingBuffer<float>& ringBuffer() const {return *m_ringBuffer;}
     private:
         RtAudio m_dac;
         RtAudio::StreamParameters m_parameters;
         int outputDeviceId;
         int inputDeviceId;
-        CoreUtils::RingBuffer<float> *m_ringBuffer;
-        CoreUtils::Transport *m_transport;
+        Core::RingBuffer<float> *m_ringBuffer;
+        Core::Transport *m_transport;
         int m_debugCounter = 0;
     };
 }

@@ -4,7 +4,7 @@
 #include <memory>
 #include "musictime.h"
 #include "structs.h"
-namespace CoreUtils {
+namespace Core {
     class MusicTimeManager
     {
     private:

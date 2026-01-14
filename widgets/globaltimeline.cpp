@@ -175,7 +175,7 @@ void GlobalTimeLine::updatePlayheadPosition()
     int64_t currentFrame = m_audioEngine->transport().getCurrentFrame();
     double xPos = m_view->gridManager().framesToXPos(currentFrame,1.0,0.0);
     double t = 0.5;
-    m_visualX = CoreUtils::Math::lerp(xPos, m_visualX, t);
+    m_visualX = Core::Math::lerp(xPos, m_visualX, t);
     m_playhead->setPos(m_visualX, 0);
     m_view->update();
 }

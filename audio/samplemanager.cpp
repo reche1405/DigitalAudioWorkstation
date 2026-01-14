@@ -13,7 +13,7 @@ void SampleManager::process(std::vector<float>& buffer, size_t currentGlobalFram
     // TODO: And add a seek function so that when the user stops the song or moves the playhead,
     // TODO: The value is set to zero, so all samples can be inspected to find the next source.
 
-    CoreUtils::MusicTimeManager& manager = CoreUtils::MusicTimeManager::instance();
+    Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
 
     size_t globalEndFrame = currentGlobalFrame + bufferSizeFrames;
     for(const auto& clip : m_clips) {
@@ -35,7 +35,7 @@ void SampleManager::process(std::vector<float>& buffer, size_t currentGlobalFram
 
 void SampleManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer,
         size_t bufferOffset, size_t assetStart, int numChannels) {
-    CoreUtils::MusicTimeManager& manager = CoreUtils::MusicTimeManager::instance();
+    Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
     const auto& samples = clip.asset->audioData->samples;
     int assetChannels = clip.asset->channels;
 
@@ -58,7 +58,7 @@ void SampleManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& b
             float sA = samples[indexA * assetChannels + assetCh];
             float sB = samples[indexB * assetChannels + assetCh];
 
-            float interpolated = CoreUtils::Math::lerp(sA, sB, fraction);
+            float interpolated = Core::Math::lerp(sA, sB, fraction);
 
             buffer[(bufferOffset + f) * numChannels + ch] += interpolated;
         }

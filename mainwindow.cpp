@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , TIME_MANAGER(&CoreUtils::MusicTimeManager::instance())
+    , TIME_MANAGER(&Core::MusicTimeManager::instance())
 {
     ui->setupUi(this);
     this->setStyleSheet("background-color: #303030;");

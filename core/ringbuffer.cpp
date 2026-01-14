@@ -1,7 +1,7 @@
 #include "ringbuffer.h"
 
 
-namespace CoreUtils {
+namespace Core {
 
 
 }

@@ -4,7 +4,7 @@
 #include <atomic>
 #include <stdint.h>
 #include "QDebug"
-namespace CoreUtils {
+namespace Core {
 
 class Transport
 {

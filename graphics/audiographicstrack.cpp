@@ -8,7 +8,7 @@ AudioGraphicsTrack::AudioGraphicsTrack(int index, qreal x, qreal y, qreal width,
 
 }
 void AudioGraphicsTrack::syncWithTrack() {
-    CoreUtils::GridManager& manager = CoreUtils::GridManager::instance();
+    Core::GridManager& manager = Core::GridManager::instance();
 
     if(auto audio = dynamic_cast<Audio::AudioTrack*>(m_data)) {
 

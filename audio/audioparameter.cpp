@@ -2,7 +2,7 @@
 
 namespace Audio {
 
-AudioParameter::AudioParameter(CoreUtils::ParamConstraints info) :
+AudioParameter::AudioParameter(Core::ParamConstraints info) :
     m_constraints(info),
     m_currentValue(info.min),
     m_targetValue(info.min)
@@ -22,7 +22,7 @@ void AudioParameter::updateSampleRate(double sr) {
 
 float AudioParameter::getNextValue() {
     float target = m_targetValue.load();
-    if(m_constraints.type == CoreUtils::ParameterType::Continuous) {
+    if(m_constraints.type == Core::ParameterType::Continuous) {
         m_currentValue += (target - m_currentValue) * m_coeff;
     } else {
         m_currentValue = target;

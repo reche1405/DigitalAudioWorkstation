@@ -1,7 +1,7 @@
 #ifndef MUSICTIME_H
 #define MUSICTIME_H
 #include "QString"
-namespace CoreUtils {
+namespace Core {
 
 enum class NotationDetail : int {BAR = 1, BEAT = 2, COUNT = 3};
 

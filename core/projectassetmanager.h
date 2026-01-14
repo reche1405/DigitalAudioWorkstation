@@ -1,16 +1,16 @@
-#ifndef GLOBALASSETMANAGER_H
-#define GLOBALASSETMANAGER_H
+#ifndef PROJECTASSETMANAGER_H
+#define PROJECTASSETMANAGER_H
 
 #include "structs.h"
 #include <memory>
 #include <qcontainerfwd.h>
-namespace CoreUtils {
+namespace Core {
 
-class GlobalAssetManager
+class ProjectAssetManager
 {
 public:
-    GlobalAssetManager() = default;
-    virtual ~GlobalAssetManager() = default;
+    ProjectAssetManager() = default;
+    virtual ~ProjectAssetManager() = default;
 
     virtual bool loadAsset(QString& path) = 0;
     virtual bool removeAsset(QString& path) = 0;
@@ -31,4 +31,4 @@ protected:
 
 } // namespace CoreUtils
 
-#endif // GLOBALASSETMANAGER_H
+#endif // PROJECTASSETMANAGER_H

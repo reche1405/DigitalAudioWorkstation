@@ -27,7 +27,7 @@ private:
     int SAMPLE_RATE;
     int BEATS_PER_BAR;
     int BEAT_LENGTH;
-    CoreUtils::MusicTimeManager* TIME_MANAGER;
+    Core::MusicTimeManager* TIME_MANAGER;
 
 };
 #endif // MAINWINDOW_H

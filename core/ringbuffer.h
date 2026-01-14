@@ -5,7 +5,7 @@
 #include <atomic>
 #include <cstdint>
 
-namespace CoreUtils {
+namespace Core {
 template < typename T >
     class RingBuffer
     {

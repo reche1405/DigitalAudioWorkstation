@@ -18,8 +18,8 @@ protected:
     TrackType m_type;
 
 public:
-    BaseTrack() : m_gain(CoreUtils::ParamConstraints{CoreUtils::ParameterType::Continuous, 0.0f, 1.0f, 20.0f, 0}),
-        m_pan(CoreUtils::ParamConstraints{CoreUtils::ParameterType::Continuous, -1.0f, 1.0f, 40.0f, 0}) {};
+    BaseTrack() : m_gain(Core::ParamConstraints{Core::ParameterType::Continuous, 0.0f, 1.0f, 20.0f, 0}),
+        m_pan(Core::ParamConstraints{Core::ParameterType::Continuous, -1.0f, 1.0f, 40.0f, 0}) {};
     virtual ~BaseTrack() {};
     virtual void process(std::vector<float>& buffer, size_t playheadFrame) = 0;
     void addEffect(std::unique_ptr<AudioNode> effect);

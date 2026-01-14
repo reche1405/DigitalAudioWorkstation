@@ -4,7 +4,7 @@
 #include "QPainter"
 #include "QDebug"
 #include <algorithm>
-namespace CoreUtils {
+namespace Core {
 
     VerticalGridLine::VerticalGridLine(QPoint ds, QPoint de, LineType type, QString label) {
         m_drawStart = ds;
@@ -107,7 +107,7 @@ namespace CoreUtils {
         configureSpacing(scale);
         double scaleFactor =  ((double)(static_cast<int>(Interval::BAR) / (double)(m_currentMajorInterval)));
         // 64 / 32 = 2
-        auto& musicManager = CoreUtils::MusicTimeManager::instance();
+        auto& musicManager = Core::MusicTimeManager::instance();
         int64_t firstTick = xPosToTicks(0, scale, xOffset);
         int64_t lastTick = xPosToTicks(width, scale, xOffset);
         // As in how many ticks is a major interval;
@@ -173,13 +173,13 @@ namespace CoreUtils {
         }
     }
     MusicTime GridManager::xPosToMusicTime(double x, double scale, double xOffset) {
-        auto& musicManager = CoreUtils::MusicTimeManager::instance();
+        auto& musicManager = Core::MusicTimeManager::instance();
         int64_t totalTicks = xPosToTicks(x, scale, xOffset);
         return musicManager.ticksToNotation(totalTicks);
 
     }
     int64_t GridManager::xPosToTicks(double x, double scale, double xOffset) {
-        auto& musicManager = CoreUtils::MusicTimeManager::instance();
+        auto& musicManager = Core::MusicTimeManager::instance();
 
         double ticksPerBar = static_cast<float>(musicManager.getTicksPerBar());
         double pxPerBarAtScale = m_defaultMajorIntervalPixels;
@@ -189,13 +189,13 @@ namespace CoreUtils {
         return totalTicks;
     }
     double  GridManager::framesToXPos(int64_t totalFrames, double scale, double xOffset) {
-        auto& musicManager = CoreUtils::MusicTimeManager::instance();
+        auto& musicManager = Core::MusicTimeManager::instance();
         int64_t totalTicks = musicManager.framesToTicks(totalFrames);
         return ticksToXPos(totalTicks, scale, xOffset);
     }
 
     double GridManager::ticksToXPos(int64_t tick, double scale, double xOffset) {
-        auto& musicManager = CoreUtils::MusicTimeManager::instance();
+        auto& musicManager = Core::MusicTimeManager::instance();
         double ticksDouble = static_cast<double>(tick);
         double ticksPerBar = static_cast<float>(musicManager.getTicksPerBar());
         double pxPerBarAtScale = m_defaultMajorIntervalPixels * scale;

@@ -2,7 +2,7 @@
 #define MATH_H
 #include <algorithm>
 #include <cmath>
-namespace CoreUtils {
+namespace Core {
 class Math {
 public:
     template<typename T>
