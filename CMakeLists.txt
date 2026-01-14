@@ -81,7 +81,12 @@ endif()
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(RT_AUDIO REQUIRED rtaudio)
 
+
+add_subdirectory(lib/midifile)
 target_include_directories(DigitalAudioWorkstation PRIVATE ${RT_AUDIO_INCLUDE_DIRS})
+
+target_include_directories(DigitalAudioWorkstation PRIVATE lib/midifile/include)
+
 target_link_libraries(DigitalAudioWorkstation PRIVATE ${RT_AUDIO_LIBRARIES})
 
 target_link_libraries(DigitalAudioWorkstation PRIVATE asound pthread)
@@ -92,7 +97,12 @@ target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Wid
 target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Core)
 target_link_libraries(DigitalAudioWorkstation PRIVATE Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(DigitalAudioWorkstation PRIVATE midifile)
 
+
+if(WIN32)
+    target_compile_defintions(midiFile PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
