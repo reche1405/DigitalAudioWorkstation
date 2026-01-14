@@ -2,6 +2,6 @@
 
 namespace Midi {
 
-ProjectMidiClipManager::ProjectMidiClipManager() {}
+
 
 } // namespace Midi

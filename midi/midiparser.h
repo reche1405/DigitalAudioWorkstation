@@ -1,12 +1,19 @@
 #ifndef MIDIPARSER_H
 #define MIDIPARSER_H
-
+#include "MidiFile.h"
+#include "midistructs.h"
 namespace Midi {
 
 class MidiParser
 {
 public:
-    MidiParser();
+    ~MidiParser() = default;
+    static MidiAsset parseFile(QString& path);
+
+private:
+    static MidiEvent parseEvent(const smf::MidiEvent& event);
+    static MidiSequence parseTrack(const smf::MidiFile& midiFile, int track);
+
 };
 
 } // namespace Midi
