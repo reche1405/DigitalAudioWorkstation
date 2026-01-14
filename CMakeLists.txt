@@ -55,6 +55,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         graphics/timelineselector.h graphics/timelineselector.cpp
         core/structs.h core/structs.cpp
         midi/midistructs.h
+        core/globalassetmanager.h core/globalassetmanager.cpp
 
 
 

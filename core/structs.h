@@ -9,7 +9,7 @@ enum AssetType {Audio, MIDI};
 
 struct Asset {
     virtual ~Asset() = default;
-    uint64_t assetID;
+    std::string assetID;
     QString fileName;
     QString path;
     bool online = true;
