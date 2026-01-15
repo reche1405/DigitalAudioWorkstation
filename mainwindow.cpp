@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "widgets/globaltimeline.h"
+#include "widgets/projectcontroller.h"
 #include "QTimer"
 #include <QAction>
 MainWindow::MainWindow(QWidget *parent)
@@ -24,9 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
     // We need to store the available sample rates and allow the user to select in a preferences window.
     // For now we will just use 48000.
 
-    m_timeline = new GlobalTimeLine(ui->timelineFrame, BPM, BEATS_PER_BAR, BEAT_LENGTH);
+    m_controller = new ProjectController(ui->timelineFrame, BPM, BEATS_PER_BAR, BEAT_LENGTH);
     QVBoxLayout *frameLayout = new QVBoxLayout(ui->timelineFrame);
-    frameLayout->addWidget(m_timeline);
+    frameLayout->addWidget(m_controller);
     ui->mainLayout->setContentsMargins(0,0,0,0);
     frameLayout->setContentsMargins(0,0,0,0);
 
@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    m_timeline->initAudio();
+    m_controller->initAudio();
         //gt->play();
 
     setupTransportControls();
@@ -58,10 +58,11 @@ void MainWindow::setupTransportControls() {
 
 void MainWindow::handleTogglePlay()
 {
-    if(m_timeline->audioEngine().transport().isPlaying()) {
-        m_timeline->audioEngine().pause();
+    if(m_controller->audioEngine().transport().isPlaying()) {
+        m_controller->audioEngine().pause();
     } else {
-        m_timeline->update();
-        m_timeline->audioEngine().play();
+        // Insure there is a healthy buffer beore playing.
+        m_controller->update();
+        m_controller->audioEngine().play();
     }
 }

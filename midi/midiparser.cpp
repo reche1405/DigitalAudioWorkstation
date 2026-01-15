@@ -3,6 +3,15 @@
 
 namespace Midi {
 
+bool MidiParser::loadFile(QString &path)
+{
+    MidiAsset asset = parseFile(path);
+    if(asset.online) {
+        return true;
+    }
+    return false;
+}
+
 MidiAsset MidiParser::parseFile(QString &path)
 {
     // Craig Sapp MIDI File parser.
@@ -20,6 +29,7 @@ MidiAsset MidiParser::parseFile(QString &path)
     if(!midiFile.read(filename)) {
 
         qDebug() << "Error reading file.";
+        asset.online = false;
         return asset;
 
     }
@@ -75,6 +85,8 @@ MidiEvent MidiParser::parseEvent(const smf::MidiEvent &event, MidiPlot &plot)
     return eventStruct;
 }
 
+
+// Returns a singular midi sequence which could be part of a multi track midi clip.
 MidiSequence MidiParser::parseTrack(const smf::MidiFile &midiFile, int track, MidiPlot &plot)
 {
     MidiSequence sequence;

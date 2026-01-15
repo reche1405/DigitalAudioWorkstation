@@ -1,12 +1,13 @@
-#include "globaltimeline.h"
-#include "ui_globaltimeline.h"
+#include "projectcontroller.h"
+#include "./widgets/ui_projectcontroller.h"
 #include <QVBoxLayout>
 #include <QRect>
 #include <QTimer>
 #include "../core/math.h"
-GlobalTimeLine::GlobalTimeLine(QWidget *parent, float bpm, int beatsPerBar, int beatLength, int sampleRate)
+#include "widgets/ui_projectcontroller.h"
+ProjectController::ProjectController(QWidget *parent, float bpm, int beatsPerBar, int beatLength, int sampleRate)
     : QWidget(parent)
-    , ui(new Ui::GlobalTimeLine),
+    , ui(new Ui::ProjectController),
     m_masterBuffer(2048, 0.0f),
     m_trackBuffer(2048, 0.0f),
     m_audioEngine(new Audio::AudioEngine())
@@ -40,7 +41,7 @@ GlobalTimeLine::GlobalTimeLine(QWidget *parent, float bpm, int beatsPerBar, int 
 
 }
 
-void GlobalTimeLine::setupScene()
+void ProjectController::setupScene()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
@@ -94,11 +95,11 @@ void GlobalTimeLine::setupScene()
     mainLayout->addWidget(m_view);
 
 }
-void GlobalTimeLine::play() {
+void ProjectController::play() {
     m_audioEngine->play();
 
 }
-void GlobalTimeLine::initAudio() {
+void ProjectController::initAudio() {
 
     if(!(m_audioEngine->openDevice(1, m_sampleRate, 1024))) {
         qWarning() << "Error opening device";
@@ -107,12 +108,12 @@ void GlobalTimeLine::initAudio() {
     }
     ;
 }
-GlobalTimeLine::~GlobalTimeLine()
+ProjectController::~ProjectController()
 {
     delete ui;
 }
 
-void GlobalTimeLine::addNewTrack(Audio::TrackType type) {
+void ProjectController::addNewTrack(Audio::TrackType type) {
     if(type == Audio::TrackType::Audio) {
         auto track = std::make_unique<Audio::AudioTrack>(m_tracks.size() + 1);
         m_tracks.push_back(std::move(track));
@@ -121,7 +122,7 @@ void GlobalTimeLine::addNewTrack(Audio::TrackType type) {
     // And the above will be a make uniwue Audio::AudioTrack
 }
 
-void GlobalTimeLine::mixMasterBuffer(uint32_t numFrames) {
+void ProjectController::mixMasterBuffer(uint32_t numFrames) {
     if(!m_audioEngine->transport().isPlaying()) {
         return;
     }
@@ -161,7 +162,7 @@ void GlobalTimeLine::mixMasterBuffer(uint32_t numFrames) {
 
 }
 
-void GlobalTimeLine::update() {
+void ProjectController::update() {
     size_t safetyMargin = 8192; // How many frames we want waiting in the pipe
     int safetyCounter = 0;
     while ((m_audioEngine->ringBuffer().availableSamples() / 2) < safetyMargin && safetyCounter < 20) {
@@ -170,7 +171,7 @@ void GlobalTimeLine::update() {
     }
 }
 
-void GlobalTimeLine::updatePlayheadPosition()
+void ProjectController::updatePlayheadPosition()
 {
     int64_t currentFrame = m_audioEngine->transport().getCurrentFrame();
     double xPos = m_view->gridManager().framesToXPos(currentFrame,1.0,0.0);
@@ -179,13 +180,13 @@ void GlobalTimeLine::updatePlayheadPosition()
     m_playhead->setPos(m_visualX, 0);
     m_view->update();
 }
-void GlobalTimeLine::addNewAudioTrack() {
+void ProjectController::addNewAudioTrack() {
 
     addNewTrack(Audio::TrackType::Audio);
 
     //
 }
-qreal GlobalTimeLine::getTrackHeightSum() {
+qreal ProjectController::getTrackHeightSum() {
     return 1;
 }
 

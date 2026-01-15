@@ -8,6 +8,7 @@ class MidiParser
 {
 public:
     ~MidiParser() = default;
+    static bool loadFile(QString& path);
     static MidiAsset parseFile(QString& path);
 
 private:

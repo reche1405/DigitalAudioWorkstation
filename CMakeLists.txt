@@ -26,7 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(DigitalAudioWorkstation
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        widgets/globaltimeline.h widgets/globaltimeline.cpp widgets/globaltimeline.ui
+        widgets/projectcontroller.h widgets/projectcontroller.cpp widgets/projectcontroller.ui
 
 
         graphics/arrangementview.h graphics/arrangementview.cpp
@@ -58,6 +58,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/projectassetmanager.h core/projectassetmanager.cpp
         midi/projectmidiclipmanager.h midi/projectmidiclipmanager.cpp
         midi/midiparser.h midi/midiparser.cpp
+        midi/midiplaybackengine.h midi/midiplaybackengine.cpp
 
 
 

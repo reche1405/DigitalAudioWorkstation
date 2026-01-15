@@ -1,5 +1,5 @@
-#ifndef GLOBALTIMELINE_H
-#define GLOBALTIMELINE_H
+#ifndef PROJECTCONTROLLER_H
+#define PROJECTCONTROLLER_H
 
 #include <QWidget>
 #include <QGraphicsView>
@@ -11,21 +11,22 @@
 #include "../audio/audioengine.h"
 #include "../graphics/globalscene.h"
 #include "../graphics/playhead.h"
+#include "../midi/midiplaybackengine.h"
 namespace Ui {
-class GlobalTimeLine;
+class ProjectController;
 }
 
-class GlobalTimeLine : public QWidget
+class ProjectController : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GlobalTimeLine (
+    explicit ProjectController (
         QWidget *parent = nullptr, float bpm = 120.0,
         int beatsPerBar = 4, int beatLength = 4, int sampleRate = 48000
         );
 
-    virtual ~GlobalTimeLine();
+    virtual ~ProjectController();
     ArrangementView* view() const {return m_view; }
     QGraphicsScene* scene() const {return m_scene; }
     void setBPM(float bpm);
@@ -48,11 +49,13 @@ public:
     void update();
 
     Audio::AudioEngine& audioEngine() const {return *m_audioEngine; }
+    Midi::MidiPlaybackEngine& playbackEngine() const {return *m_playBackEngine; }
+
     void updatePlayheadPosition();
 
 
 private:
-    Ui::GlobalTimeLine *ui;
+    Ui::ProjectController *ui;
     ArrangementView *m_view;
     GlobalScene *m_scene;
     float m_BPM;
@@ -61,6 +64,7 @@ private:
     int m_sampleRate;
     int64_t m_ppq = 960;
     Audio::AudioEngine *m_audioEngine;
+    Midi::MidiPlaybackEngine *m_playBackEngine;
     size_t m_currentPlayheadFrame = 0;
     double m_visualX = 0.0;
     std::vector<float> m_masterBuffer;
@@ -69,4 +73,4 @@ private:
     std::vector<std::unique_ptr<Audio::BaseTrack>> m_tracks;
 };
 
-#endif // GLOBALTIMELINE_H
+#endif // PROJECTCONTROLLER_H
