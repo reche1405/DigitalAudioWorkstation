@@ -17,13 +17,8 @@ MidiAsset MidiParser::parseFile(QString &path)
     }
     // Todo, loop over tracks
     for(int i =0; i < midiFile.getTrackCount(); ++i) {
-        MidiSequence sequence;
-        for(int j = 0; j < midiFile[i].size(); ++j) {
-            // for each event create a new midi event
-            MidiEvent event = parseEvent(midiFile[i][j]);
-            sequence.events.push_back(event);
-        }
-        // once at the end of a track, create a midi sequence
+        MidiSequence sequence = parseTrack(midiFile, i);
+
     }
 
     return asset;
@@ -31,12 +26,30 @@ MidiAsset MidiParser::parseFile(QString &path)
 
 MidiEvent MidiParser::parseEvent(const smf::MidiEvent &event)
 {
+    MidiEvent eventStruct;
+    eventStruct.channel = event.getChannelNibble();
+    eventStruct.statusByte = event.getCommandByte();
+    eventStruct.tick = event.tick;
 
+    if(event.isNoteOn() || event.isNoteOff()) {
+        eventStruct.data1 = event.getKeyNumber();
+        eventStruct.data2 = event.getVelocity();
+
+    }
+
+    return eventStruct;
 }
 
 MidiSequence MidiParser::parseTrack(const smf::MidiFile &midiFile, int track)
 {
-
+    MidiSequence sequence;
+    sequence.ppq = midiFile.getTPQ();
+    for(int j = 0; j < midiFile[track].size(); ++j) {
+        // for each event create a new midi event
+        MidiEvent event = parseEvent(midiFile[track][j]);
+        sequence.events.push_back(event);
+    }
+    return sequence;
 }
 
 
