@@ -13,7 +13,7 @@ namespace Core {
         int m_beatsPerBar;
         int m_beatLength;
         int m_sampleRate;
-        int m_pointsPerQuarter; // The total amount of points in a qaurter note.
+        int m_ticksPerQuarter; // The total amount of points in a qaurter note.
         float m_msPerBeat;
 
 
@@ -52,12 +52,12 @@ namespace Core {
         void setBpm(float bpm);
         void setTimeSignature(int beatsPerBar, int beatLength);
         void setSampleRate(int sampleRate);
-        void setPointsPerQuarter(int ppq);
+        void setTicksPerQuarter(int ppq);
         MusicTime addTimes(MusicTime first, MusicTime second);
         float getBMP() const {return m_bpm; }
 
         int64_t getTicksPerBar();
-        int getPointsPerQuarter() const {return m_pointsPerQuarter; }
+        int getTicksPerQuarter() const {return m_ticksPerQuarter; }
         int getBeatsPerBar() const {return m_beatsPerBar; }
         int getBeatLength() const {return m_beatLength; }
         int getCountsPerBar() const {return m_beatsPerBar * m_beatLength; }

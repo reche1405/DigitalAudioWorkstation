@@ -11,8 +11,8 @@ public:
     static MidiAsset parseFile(QString& path);
 
 private:
-    static MidiEvent parseEvent(const smf::MidiEvent& event);
-    static MidiSequence parseTrack(const smf::MidiFile& midiFile, int track);
+    static MidiEvent parseEvent(const smf::MidiEvent& event, MidiPlot &plot);
+    static MidiSequence parseTrack(const smf::MidiFile& midiFile, int track, MidiPlot &plot);
 
 };
 

@@ -29,28 +29,28 @@ namespace Core {
         int64_t remainder = totalTicks;
         mt.setBar(remainder / ticksPerBar);
         remainder %= ticksPerBar;
-        mt.setBeat(remainder / m_pointsPerQuarter);
-        remainder %= m_pointsPerQuarter;
+        mt.setBeat(remainder / m_ticksPerQuarter);
+        remainder %= m_ticksPerQuarter;
         mt.setTick((int)remainder);
 
         return mt;
     }
     int64_t MusicTimeManager::getTicksPerBar() {
-        int ticksPerSixteenth = m_pointsPerQuarter / m_beatLength;
+        int ticksPerSixteenth = m_ticksPerQuarter / m_beatLength;
         int sixteenthBeat = m_beatLength;
         int beatsPerBar = m_beatsPerBar;
-        int64_t ticksPerBar = (int64_t)m_pointsPerQuarter * beatsPerBar;
+        int64_t ticksPerBar = (int64_t)m_ticksPerQuarter * beatsPerBar;
         return ticksPerBar;
     }
 
     int64_t MusicTimeManager::framesToTicks(int totalFrames) {
-        double frames =  (double)totalFrames * (m_pointsPerQuarter * m_bpm) / (60.0 * m_sampleRate);
+        double frames =  (double)totalFrames * (m_ticksPerQuarter * m_bpm) / (60.0 * m_sampleRate);
         return static_cast<int64_t>(frames + 0.5f);
     }
 
     size_t MusicTimeManager::ticksToFrames(int64_t totalTicks)
     {
-        double seconds = (double)totalTicks / (m_bpm / 60.0f * m_pointsPerQuarter);
+        double seconds = (double)totalTicks / (m_bpm / 60.0f * m_ticksPerQuarter);
         return static_cast<size_t>(seconds * m_sampleRate);
 
     }
@@ -228,7 +228,7 @@ namespace Core {
         mt.setBar(combinedBars);
         return mt;
     }
-    void MusicTimeManager::setPointsPerQuarter(int ppq) {
-        m_pointsPerQuarter = ppq;
+    void MusicTimeManager::setTicksPerQuarter(int ppq) {
+        m_ticksPerQuarter = ppq;
     }
 }

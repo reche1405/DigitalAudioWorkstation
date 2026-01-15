@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     TIME_MANAGER->setTimeSignature(BEATS_PER_BAR, BEAT_LENGTH);
     TIME_MANAGER->setBpm(BPM);
-    TIME_MANAGER->setPointsPerQuarter(960);
+    TIME_MANAGER->setTicksPerQuarter(960);
     TIME_MANAGER->setSampleRate(SAMPLE_RATE);
 
 

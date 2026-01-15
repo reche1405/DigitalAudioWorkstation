@@ -14,9 +14,9 @@ namespace Midi {
     };
     struct MidiSequence {
         std::vector<MidiEvent> events;
-        int ppq;
+        int tpq;
         // the below function will be used in the audio callback when the track processes audio.
-        std::vector<MidiEvent> getEventsForTickRange(int64_t startTick, int64_t endTick) {
+        std::vector<MidiEvent> getEventsForTickRange(int64_t startTick, int64_t endTick) const {
             std::vector<MidiEvent> currentEvents;
             for(int i=0; i< events.size(); ++i) {
 
@@ -35,6 +35,7 @@ namespace Midi {
         int64_t startTick;
         int64_t durationTicks;
         uint8_t pitch;
+        uint8_t channel;
         int velocity;
 
     };
@@ -45,6 +46,7 @@ namespace Midi {
         // Returns a vector of pitches.
         // This will be useful when drawing timeline midi clips
         // From C0 - C7 but still centering the graphic.
+
         std::vector<uint8_t> pitchRange() {
             std::vector<uint8_t> range;
             uint8_t min = 127;
