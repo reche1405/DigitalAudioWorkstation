@@ -44,8 +44,6 @@ namespace Audio {
 
     };
 
-    enum class TrackType{Audio, MIDI};
 
-    enum class OutputOption{Master, SendsOnly};
 }
 #endif // AUDIOSTRUCTS_H

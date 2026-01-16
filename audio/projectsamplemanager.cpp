@@ -9,7 +9,7 @@ namespace Audio {
 
 
     void ProjectSampleManager::plotVisualisation(std::shared_ptr<AudioAsset> asset) {
-        int desiredRes = 100;
+        int desiredRes = 200;
         int channels = asset->channels;
         asset->visualWavePoints.plots.resize(channels);
         std::vector<float>& samples = asset->audioData->samples;

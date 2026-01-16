@@ -31,7 +31,7 @@ namespace Midi {
         }
     };
 
-    struct MidiPlotNote {
+    struct MidiNote {
         int64_t startTick;
         int64_t durationTicks;
         uint8_t pitch;
@@ -40,8 +40,8 @@ namespace Midi {
 
     };
 
-    struct MidiPlot {
-        std::vector<MidiPlotNote> notes;
+    struct MidiScore {
+        std::vector<MidiNote> notes;
 
         // Returns a vector of pitches.
         // This will be useful when drawing timeline midi clips
@@ -51,7 +51,7 @@ namespace Midi {
             std::vector<uint8_t> range;
             uint8_t min = 127;
             uint8_t max = 0;
-            for(MidiPlotNote note : notes) {
+            for(MidiNote note : notes) {
                 if (note.pitch < min ) min = note.pitch;
                 if (note.pitch > max) max = note.pitch;
             }
@@ -64,7 +64,7 @@ namespace Midi {
     struct MidiAsset : public Core::Asset {
         double durationTicks;
         MidiSequence data;
-        MidiPlot visualPlot;
+        MidiScore visualPlot;
         Core::AssetType type() const override {return Core::AssetType::MIDI; }
 
     };
@@ -76,6 +76,28 @@ namespace Midi {
         int64_t loopEndTick;
 
     };
+
+    struct MidiMessage {
+        int samplePosition;
+        MidiEvent event;
+    };
+
+    struct MidiBuffer {
+        std::vector<MidiMessage> messages;
+        void addEvent(MidiEvent& event, int samplePosition) {
+            messages.push_back({samplePosition, event});
+            std::sort(messages.begin(), messages.end(),
+            [](const auto& a, const auto& b)  {
+                return a.samplePosition < b.samplePosition;
+
+            });
+        }
+        void clear() {messages.clear();}
+        bool isEmpty() const {return messages.empty();}
+        auto begin() {return messages.begin();}
+        auto end() {return messages.end();}
+    };
+
 
 
 }

@@ -34,13 +34,19 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/musictimemanager.h core/musictimemanager.cpp
         core/musictime.h core/musictime.cpp
         core/gridmanager.h core/gridmanager.cpp
+        core/ringbuffer.h core/ringbuffer.cpp
+        core/transport.h core/transport.cpp
+        core/math.h
+        core/parameter.h core/parameter.cpp
+        core/structs.h core/structs.cpp
+        core/projectassetmanager.h core/projectassetmanager.cpp
+        core/mixer.h core/mixer.cpp
 
         audio/projectsamplemanager.h audio/projectsamplemanager.cpp
         audio/audiostructs.h
         audio/audioengine.h audio/audioengine.cpp
         audio/audionode.h audio/audionode.cpp
         audio/track.h audio/track.cpp
-        audio/audioparameter.h audio/audioparameter.cpp
         audio/samplemanager.cpp
         audio/samplemanager.h
         graphics/basesceneclip.h graphics/basesceneclip.cpp
@@ -48,17 +54,14 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         graphics/audiographicstrack.h graphics/audiographicstrack.cpp
         graphics/globalscene.h graphics/globalscene.cpp
         graphics/audiosceneclip.h graphics/audiosceneclip.cpp
-        core/ringbuffer.h core/ringbuffer.cpp
-        core/transport.h core/transport.cpp
-        core/math.h
         graphics/playhead.h graphics/playhead.cpp
         graphics/timelineselector.h graphics/timelineselector.cpp
-        core/structs.h core/structs.cpp
         midi/midistructs.h
-        core/projectassetmanager.h core/projectassetmanager.cpp
-        midi/projectmidiclipmanager.h midi/projectmidiclipmanager.cpp
+        midi/midiassetmanager.h midi/midiassetmanager.cpp
         midi/midiparser.h midi/midiparser.cpp
         midi/midiplaybackengine.h midi/midiplaybackengine.cpp
+        core/node.h
+        core/clipmanager.h core/clipmanager.cpp
 
 
 

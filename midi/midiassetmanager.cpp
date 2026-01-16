@@ -1,4 +1,4 @@
-#include "projectmidiclipmanager.h"
+#include "midiassetmanager.h"
 
 namespace Midi {
 

@@ -2,10 +2,10 @@
 
 namespace Audio {
 
-ProcessChain::~ProcessChain() {};
 
     void ProcessChain::process(std::vector<float>& buffer)  {
         for(auto& effect : m_effects) {
+            ProcessChain::~ProcessChain() {};
             effect->process(buffer);
         }
     }

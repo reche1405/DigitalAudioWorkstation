@@ -19,12 +19,12 @@ void GlobalScene::syncWithTracks(const std::vector<std::unique_ptr<Audio::BaseTr
         if(!(m_guiTracks.count(track->id()) > 0)) {
             BaseGraphicsTrack* newItem = nullptr;
             switch(track->type()) {
-            case Audio::TrackType::Audio:
+            case Core::TrackType::Audio:
                 newItem = new AudioGraphicsTrack(
                     track->id(),x,y,sceneRect().width(),defaultTrackHeight,
                     pen, brush, track.get(), nullptr);
                 break;
-            case Audio::TrackType::MIDI:
+            case Core::TrackType::MIDI:
                 newItem = new AudioGraphicsTrack(
                     track->id(),x,y,this->sceneRect().width(),defaultTrackHeight,
                     pen, brush, track.get(), nullptr);

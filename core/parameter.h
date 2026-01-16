@@ -1,11 +1,11 @@
-#ifndef AUDIOPARAMETER_H
-#define AUDIOPARAMETER_H
+#ifndef PARAMETER_H
+#define PARAMETER_H
 
 
-#include "audiostructs.h"
-namespace Audio {
+#include "structs.h"
+namespace Core {
 
-class AudioParameter
+class Parameter
 {
 
 protected:
@@ -14,7 +14,7 @@ protected:
     std::atomic<float> m_targetValue;
     float m_coeff;
 public:
-    AudioParameter(Core::ParamConstraints info);
+    Parameter(Core::ParamConstraints info);
     void updateSampleRate(double sr);
     float getNextValue();
     void setTarget(float value);
@@ -22,4 +22,4 @@ public:
 
 } // namespace Audio
 
-#endif // AUDIOPARAMETER_H
+#endif // PARAMETER_H

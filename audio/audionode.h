@@ -3,9 +3,10 @@
 
 #include "vector"
 #include <memory>
+#include "../core/node.h"
 namespace Audio {
 
-class AudioNode
+class AudioNode : public Core::Node
 {
 public:
     AudioNode() = default;
@@ -23,6 +24,7 @@ public:
     void addEffect(std::unique_ptr<AudioNode> effect);
     void process(std::vector<float>& buffer) override;
     void updateSampleRate(double sr) override;
+    void updateBPM(double bpm) override;
 };
 
 } // namespace Audio

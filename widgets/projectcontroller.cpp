@@ -113,8 +113,8 @@ ProjectController::~ProjectController()
     delete ui;
 }
 
-void ProjectController::addNewTrack(Audio::TrackType type) {
-    if(type == Audio::TrackType::Audio) {
+void ProjectController::addNewTrack(Core::TrackType type) {
+    if(type == Core::TrackType::Audio) {
         auto track = std::make_unique<Audio::AudioTrack>(m_tracks.size() + 1);
         m_tracks.push_back(std::move(track));
     }
@@ -130,6 +130,13 @@ void ProjectController::mixMasterBuffer(uint32_t numFrames) {
     int64_t waiting = m_audioEngine->ringBuffer().availableSamples() / 2;
     int64_t writePos = playhead + waiting;
     size_t samplesToProcess = numFrames * 2;
+
+
+    // m_mixer.mixMasterBuffer(samplesToProcess, writePos, numFrames)
+
+
+
+
     for (auto& t : m_tracks) {
         std::fill(m_trackBuffer.begin(), m_trackBuffer.begin() + samplesToProcess , 0.0f);
         // TODO: pass the current frame from this globaltimeline manager: URGENT

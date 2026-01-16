@@ -1,15 +1,15 @@
-#ifndef PROJECTMIDICLIPMANAGER_H
-#define PROJECTMIDICLIPMANAGER_H
+#ifndef MIDIASSETMANAGER_H
+#define MIDIASSETMANAGER_H
 
 #include "../core/projectassetmanager.h"
 #include "midiparser.h"
 
 namespace Midi {
 
-class ProjectMidiClipManager : public Core::ProjectAssetManager
+class MidiAssetManager : public Core::ProjectAssetManager
 {
 public:
-    virtual ~ProjectMidiClipManager() = default;
+    virtual ~MidiAssetManager() = default;
 
     bool loadAsset(QString& path) override {
         std::string strPath = path.toStdString();
@@ -22,10 +22,11 @@ public:
         m_registry.erase(path.toStdString());
         return true;
     }
+
 private:
     MidiParser m_parser;
 };
 
 } // namespace Midi
 
-#endif // PROJECTMIDICLIPMANAGER_H
+#endif // MIDIASSETMANAGER_H

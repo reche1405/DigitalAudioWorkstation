@@ -22,7 +22,7 @@ MidiAsset MidiParser::parseFile(QString &path)
     MidiAsset asset;
 
     // The plot notes
-    MidiPlot plot;
+    MidiScore plot;
     asset.visualPlot = plot;
 
 
@@ -43,7 +43,7 @@ MidiAsset MidiParser::parseFile(QString &path)
     return asset;
 }
 
-MidiEvent MidiParser::parseEvent(const smf::MidiEvent &event, MidiPlot &plot)
+MidiEvent MidiParser::parseEvent(const smf::MidiEvent &event, MidiScore &plot)
 {
     MidiEvent eventStruct;
     eventStruct.channel = event.getChannelNibble();
@@ -59,7 +59,7 @@ MidiEvent MidiParser::parseEvent(const smf::MidiEvent &event, MidiPlot &plot)
         // And can create a midiplot note and push it to the back of the plot
         if(event.isNoteOn()) {
 
-            MidiPlotNote note;
+            MidiNote note;
             note.startTick = event.tick;
             note.durationTicks = event.getTickDuration();
             note.pitch = event.getKeyNumber();
@@ -87,7 +87,7 @@ MidiEvent MidiParser::parseEvent(const smf::MidiEvent &event, MidiPlot &plot)
 
 
 // Returns a singular midi sequence which could be part of a multi track midi clip.
-MidiSequence MidiParser::parseTrack(const smf::MidiFile &midiFile, int track, MidiPlot &plot)
+MidiSequence MidiParser::parseTrack(const smf::MidiFile &midiFile, int track, MidiScore &plot)
 {
     MidiSequence sequence;
     sequence.tpq = midiFile.getTPQ();

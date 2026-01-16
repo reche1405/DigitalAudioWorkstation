@@ -3,7 +3,7 @@
 
 #include "QString"
 #include "audionode.h"
-#include "audioparameter.h"
+#include "../core/parameter.h"
 #include "samplemanager.h"
 namespace Audio {
 
@@ -12,10 +12,10 @@ protected:
     bool m_isMuted = false;
     QString m_name;
     unsigned int m_id;
-    AudioParameter m_gain;
-    AudioParameter m_pan;
+    Core::Parameter m_gain;
+    Core::Parameter m_pan;
     ProcessChain m_chain;
-    TrackType m_type;
+    Core::TrackType m_type;
 
 public:
     BaseTrack() : m_gain(Core::ParamConstraints{Core::ParameterType::Continuous, 0.0f, 1.0f, 20.0f, 0}),
@@ -25,7 +25,7 @@ public:
     void addEffect(std::unique_ptr<AudioNode> effect);
     void setName(std::string newName);
     int id() const { return m_id; }
-    TrackType type() const {return m_type; }
+    Core::TrackType type() const {return m_type; }
 };
 
 class AudioTrack : public BaseTrack

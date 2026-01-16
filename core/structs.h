@@ -19,6 +19,10 @@ struct Asset {
 
 };
 
+struct ClipID {
+
+};
+
 struct Clip {
     virtual ~Clip() = default;
     int64_t globalStartTick;
@@ -37,7 +41,8 @@ struct Clip {
 
 };
 
-
+enum class TrackType{Audio, MIDI};
+enum class OutputOption{Master, SendsOnly};
 
 enum class ParameterType { Continuous, Stepped, Toggle };
 enum class ParamMapping { Linear, Logarithmic };

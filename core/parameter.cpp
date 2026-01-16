@@ -1,8 +1,8 @@
-#include "audioparameter.h"
+#include "parameter.h"
 
-namespace Audio {
+namespace Core {
 
-AudioParameter::AudioParameter(Core::ParamConstraints info) :
+Parameter::Parameter(Core::ParamConstraints info) :
     m_constraints(info),
     m_currentValue(info.min),
     m_targetValue(info.min)
@@ -11,7 +11,7 @@ AudioParameter::AudioParameter(Core::ParamConstraints info) :
 
 }
 
-void AudioParameter::updateSampleRate(double sr) {
+void Parameter::updateSampleRate(double sr) {
     if(m_constraints.rampTimeMs <= 0.0f) {
         m_coeff = 1.0f;
         return;
@@ -20,7 +20,7 @@ void AudioParameter::updateSampleRate(double sr) {
     m_coeff = 1.0 - std::exp(-1.0 / rampSamples);
 }
 
-float AudioParameter::getNextValue() {
+float Parameter::getNextValue() {
     float target = m_targetValue.load();
     if(m_constraints.type == Core::ParameterType::Continuous) {
         m_currentValue += (target - m_currentValue) * m_coeff;
@@ -30,7 +30,7 @@ float AudioParameter::getNextValue() {
     return m_currentValue;
 }
 
-void AudioParameter::setTarget(float newTarget) {
+void Parameter::setTarget(float newTarget) {
     m_targetValue.store(newTarget);
 }
 } // namespace Audio
