@@ -8,7 +8,7 @@
 #include "../core/mixer.h"
 #include "../audio/track.h"
 #include "../audio/audiostructs.h"
-#include "../audio/projectsamplemanager.h"
+#include "../audio/audioassetmanager.h"
 #include "../audio/audioengine.h"
 #include "../graphics/globalscene.h"
 #include "../graphics/playhead.h"
@@ -40,7 +40,7 @@ public:
     void addNewTrack(Core::TrackType type = Core::TrackType::Audio);
     void mixMasterBuffer(uint32_t numFrames);
     size_t getCurrentPlayheadFrame() const {return m_currentPlayheadFrame;}
-    Audio::ProjectSampleManager m_sampler;
+    Audio::AudioAssetManager m_sampler;
     void addNewAudioTrack();
     // void addNewMidiTrack();
     qreal getTrackHeightSum();
@@ -65,6 +65,7 @@ private:
     int m_sampleRate;
     int64_t m_ppq = 960;
     Audio::AudioEngine *m_audioEngine;
+    Core::IdManager *m_IdManager;
     Midi::MidiPlaybackEngine *m_playBackEngine;
     size_t m_currentPlayheadFrame = 0;
     double m_visualX = 0.0;

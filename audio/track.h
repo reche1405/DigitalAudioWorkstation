@@ -4,7 +4,7 @@
 #include "QString"
 #include "audionode.h"
 #include "../core/parameter.h"
-#include "samplemanager.h"
+#include "audioclipmanager.h"
 namespace Audio {
 
 class BaseTrack {
@@ -31,14 +31,14 @@ public:
 class AudioTrack : public BaseTrack
 {
 private:
-    SampleManager m_sampler;
+    AudioClipManager m_sampler;
     // LocalSampleManager m_sampleManager;
     public:
 
         AudioTrack(unsigned int id);
         virtual ~AudioTrack() = default;
         void process(std::vector<float>& buffer, size_t playheadFrame) override;
-        SampleManager& getSampler() {return m_sampler;}
+        AudioClipManager& getSampler() {return m_sampler;}
 
 
 };

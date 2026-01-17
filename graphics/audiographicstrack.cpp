@@ -24,7 +24,8 @@ void AudioGraphicsTrack::syncWithTrack() {
             qreal y = 25;
             qreal width = manager.ticksToXPos(clip.getTotalTicks(), 1.0, 0.0);
             qreal height = this->rect().height();
-            Graphics::BaseSceneClip* newClip = new Graphics::AudioSceneClip(x,y,width, height,m_color, clip.asset, this);
+            std::shared_ptr<const Audio::AudioClip> _clip = std::make_shared<const Audio::AudioClip>(clip);
+            Graphics::BaseSceneClip* newClip = new Graphics::AudioSceneClip(x,y,width, height,m_color, _clip, this);
             m_clips.push_back(newClip);
         }
     }

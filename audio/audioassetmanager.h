@@ -1,5 +1,5 @@
-#ifndef PROJECTSAMPLEMANAGER_H
-#define PROJECTSAMPLEMANAGER_H
+#ifndef AUDIOASSETMANAGER_H
+#define AUDIOASSETMANAGER_H
 #include "sndfile.h"
 #include <QFileInfo>
 
@@ -7,13 +7,13 @@
 #include "../core/projectassetmanager.h"
 namespace Audio {
 
-class ProjectSampleManager : public Core::ProjectAssetManager
+class AudioAssetManager : public Core::ProjectAssetManager
     {
     private:
         // The a cache of entries: filename alongside a shared pointer to the audio asset
         //std::map<QString, std::shared_ptr<AudioAsset>> m_assetCache;
     public:
-        virtual ~ProjectSampleManager() = default;
+        virtual ~AudioAssetManager() = default;
 
 
         bool loadAsset(QString& path) override {
@@ -89,4 +89,4 @@ class ProjectSampleManager : public Core::ProjectAssetManager
     };
 
 }
-#endif // PROJECTSAMPLEMANAGER_H
+#endif // AUDIOASSETMANAGER_H

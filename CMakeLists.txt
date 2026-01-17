@@ -42,13 +42,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/projectassetmanager.h core/projectassetmanager.cpp
         core/mixer.h core/mixer.cpp
 
-        audio/projectsamplemanager.h audio/projectsamplemanager.cpp
+        audio/audioassetmanager.h audio/audioassetmanager.cpp
         audio/audiostructs.h
         audio/audioengine.h audio/audioengine.cpp
         audio/audionode.h audio/audionode.cpp
         audio/track.h audio/track.cpp
-        audio/samplemanager.cpp
-        audio/samplemanager.h
+        audio/audioclipmanager.cpp
+        audio/audioclipmanager.h
         graphics/basesceneclip.h graphics/basesceneclip.cpp
         graphics/basegraphicstrack.h graphics/basegraphicstrack.cpp
         graphics/audiographicstrack.h graphics/audiographicstrack.cpp
@@ -62,6 +62,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         midi/midiplaybackengine.h midi/midiplaybackengine.cpp
         core/node.h
         core/clipmanager.h core/clipmanager.cpp
+        core/idmanager.h core/idmanager.cpp
+        midi/midiclipmanager.h midi/midiclipmanager.cpp
 
 
 

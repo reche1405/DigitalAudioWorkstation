@@ -3,13 +3,14 @@
 
 #include <cstdint>
 #include <QString>
+#include "idmanager.h"
 namespace Core {
 enum AssetType {Audio, MIDI};
 
 
 struct Asset {
     virtual ~Asset() = default;
-    std::string assetID;
+    ID& id = IdManager::instance().generateId();
     QString fileName;
     QString path;
     bool online = true;
@@ -19,11 +20,10 @@ struct Asset {
 
 };
 
-struct ClipID {
-
-};
 
 struct Clip {
+    ID& id = IdManager::instance().generateId();
+    std::string name;
     virtual ~Clip() = default;
     int64_t globalStartTick;
     int64_t localStartTick;
@@ -32,12 +32,18 @@ struct Clip {
     bool operator<(Clip other) {
         return globalStartTick < other.globalStartTick;
     }
+    bool operator=(Clip other) {
+        return globalStartTick = other.globalStartTick;
+    }
     int64_t globalEndTick() const {
         return globalStartTick + localEndTick;
     }
     int64_t getTotalTicks() const {
         return  localEndTick - localStartTick;
     }
+
+    void setName(std::string newName) {name = newName;};
+    void setGlobalStartTick(int64_t tick) {globalStartTick = tick;};
 
 };
 

@@ -5,7 +5,8 @@ namespace Core {
 Parameter::Parameter(Core::ParamConstraints info) :
     m_constraints(info),
     m_currentValue(info.min),
-    m_targetValue(info.min)
+    m_targetValue(info.min),
+    m_id(Core::IdManager::instance().generateId())
 
 {
 

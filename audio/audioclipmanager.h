@@ -1,17 +1,18 @@
-#ifndef SAMPLEMANAGER_H
-#define SAMPLEMANAGER_H
+#ifndef AUDIOCLIPMANAGER_H
+#define AUDIOCLIPMANAGER_H
 
 #include <vector>
 #include "audiostructs.h"
+#include "../core/clipmanager.h"
 namespace Audio {
 
-class SampleManager
+class AudioClipManager : public Core::ClipManager
 {
 private:
     std::vector<AudioClip> m_clips;
     uint32_t m_projectSampleRate = 44100;
 public:
-    SampleManager();
+    AudioClipManager();
     void addClip(AudioClip clip) {
 
         m_clips.push_back(clip);
@@ -24,9 +25,9 @@ public:
     void setLocalEndFrame(AudioClip clip, size_t endFrame);
     void process(std::vector<float>& buffer, size_t currentGlobalFrame, int numChannels);
     void mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer, size_t bufferOffset, size_t assetStartFrame, int numChannels);
-    void prepare(uint32_t sampleRate);
+    void prepare(uint32_t sampleRate) override {m_projectSampleRate = sampleRate;};
 };
 
 } // namespace Audio
 
-#endif // SAMPLEMANAGER_H
+#endif // AUDIOCLIPMANAGER_H

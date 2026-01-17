@@ -8,7 +8,8 @@
 ProjectController::ProjectController(QWidget *parent, float bpm, int beatsPerBar, int beatLength, int sampleRate)
     : QWidget(parent)
     , ui(new Ui::ProjectController),
-    m_audioEngine(new Audio::AudioEngine())
+    m_audioEngine(new Audio::AudioEngine()),
+    m_IdManager(&Core::IdManager::instance())
 {
     ui->setupUi(this);
     this->m_BPM = bpm;

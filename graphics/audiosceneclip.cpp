@@ -3,7 +3,7 @@
 #include "../core/gridmanager.h"
 namespace Graphics {
 
-AudioSceneClip::AudioSceneClip(qreal x, qreal y, qreal width, qreal height, QColor color,std::shared_ptr<const Audio::AudioAsset> data, QGraphicsItem* parent)
+AudioSceneClip::AudioSceneClip(qreal x, qreal y, qreal width, qreal height, QColor color,std::shared_ptr<const Audio::AudioClip> data, QGraphicsItem* parent)
     : BaseSceneClip(x, y, width, height, color, parent)
     , m_data(std::move(data))
 
@@ -14,11 +14,11 @@ AudioSceneClip::AudioSceneClip(qreal x, qreal y, qreal width, qreal height, QCol
 
 void AudioSceneClip::drawContent(QPainter* painter) {
 
-    const int lanes = m_data->stereoIdentical ? 1 : m_data->channels;
+    const int lanes = m_data->asset->stereoIdentical ? 1 : m_data->asset->channels;
     Core::GridManager& gridManager = Core::GridManager::instance();
     QRectF rect = QRectF(0,0,this->rect().width(),this->rect().height());
     QFont font = painter->font();
-    gridManager.drawScaledText(painter, rect.left() + 5 /painter->transform().m11() , rect.top() + 9, m_data->fileName, painter->transform().m11());
+    gridManager.drawScaledText(painter, rect.left() + 5 /painter->transform().m11() , rect.top() + 9, m_data->asset->fileName, painter->transform().m11());
     rect.setTop(rect.top() + 15);
     //rect.setHeight(rect.height());
     QPen pen = painter->pen();
@@ -29,7 +29,7 @@ void AudioSceneClip::drawContent(QPainter* painter) {
     qreal laneHeight = rect.height() / lanes;
     painter->setRenderHint(QPainter::Antialiasing, true);
     int plotCounter = 0;
-    for (const auto& plot : m_data->visualWavePoints.plots) {
+    for (const auto& plot : m_data->asset->visualWavePoints.plots) {
         QPolygonF poly;
 
         qreal top = rect.top() + (laneHeight * plotCounter);

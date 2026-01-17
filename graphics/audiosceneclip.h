@@ -10,10 +10,10 @@ class AudioSceneClip : public BaseSceneClip
 {
     Q_OBJECT
 public:
-    AudioSceneClip(qreal x, qreal y, qreal width, qreal height, QColor color,std::shared_ptr<const Audio::AudioAsset> data, QGraphicsItem* parent);
+    AudioSceneClip(qreal x, qreal y, qreal width, qreal height, QColor color, std::shared_ptr<const Audio::AudioClip> data, QGraphicsItem* parent);
     ~AudioSceneClip() override = default;
 private:
-    std::shared_ptr<const Audio::AudioAsset> m_data;
+    std::shared_ptr<const Audio::AudioClip> m_data;
     void drawContent(QPainter* painter) override;
 };
 }

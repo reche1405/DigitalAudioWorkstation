@@ -1,11 +1,11 @@
-#include "samplemanager.h"
+#include "audioclipmanager.h"
 #include "../core/math.h"
 #include "../core/musictimemanager.h"
 namespace Audio {
 
-SampleManager::SampleManager() {}
+AudioClipManager::AudioClipManager() {}
 
-void SampleManager::process(std::vector<float>& buffer, size_t currentGlobalFrame, int numChannels) {
+void AudioClipManager::process(std::vector<float>& buffer, size_t currentGlobalFrame, int numChannels) {
     size_t bufferSizeFrames = buffer.size() / numChannels;
     // TODO: Implement a clip counter and order them by globalStartFrame.
     // Rather than add aclip counter that incrememnts, I have sorted the clips by their start time when a clip is added.
@@ -33,7 +33,7 @@ void SampleManager::process(std::vector<float>& buffer, size_t currentGlobalFram
     }
 };
 
-void SampleManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer,
+void AudioClipManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer,
         size_t bufferOffset, size_t assetStart, int numChannels) {
     Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
     const auto& samples = clip.asset->audioData->samples;

@@ -1,4 +1,4 @@
-#include "projectsamplemanager.h"
+#include "audioassetmanager.h"
 
 #include <QFileInfo>
 
@@ -8,7 +8,7 @@ namespace Audio {
     //GlobalSampleManager::GlobalSampleManager() {}
 
 
-    void ProjectSampleManager::plotVisualisation(std::shared_ptr<AudioAsset> asset) {
+    void AudioAssetManager::plotVisualisation(std::shared_ptr<AudioAsset> asset) {
         int desiredRes = 200;
         int channels = asset->channels;
         asset->visualWavePoints.plots.resize(channels);
