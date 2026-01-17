@@ -11,7 +11,7 @@ class BaseTrack {
 protected:
     bool m_isMuted = false;
     QString m_name;
-    unsigned int m_id;
+    Core::ID& m_id ;
     Core::Parameter m_gain;
     Core::Parameter m_pan;
     ProcessChain m_chain;
@@ -19,12 +19,14 @@ protected:
 
 public:
     BaseTrack() : m_gain(Core::ParamConstraints{Core::ParameterType::Continuous, 0.0f, 1.0f, 20.0f, 0}),
-        m_pan(Core::ParamConstraints{Core::ParameterType::Continuous, -1.0f, 1.0f, 40.0f, 0}) {};
+        m_pan(Core::ParamConstraints{Core::ParameterType::Continuous, -1.0f, 1.0f, 40.0f, 0}),
+    m_id(Core::IdManager::instance().generateId())
+    {};
     virtual ~BaseTrack() {};
     virtual void process(std::vector<float>& buffer, size_t playheadFrame) = 0;
     void addEffect(std::unique_ptr<AudioNode> effect);
     void setName(std::string newName);
-    int id() const { return m_id; }
+    Core::ID& id() const { return m_id; }
     Core::TrackType type() const {return m_type; }
 };
 
@@ -35,7 +37,7 @@ private:
     // LocalSampleManager m_sampleManager;
     public:
 
-        AudioTrack(unsigned int id);
+        AudioTrack();
         virtual ~AudioTrack() = default;
         void process(std::vector<float>& buffer, size_t playheadFrame) override;
         AudioClipManager& getSampler() {return m_sampler;}

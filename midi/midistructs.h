@@ -18,11 +18,11 @@ namespace Midi {
         // the below function will be used in the audio callback when the track processes audio.
         std::vector<MidiEvent> getEventsForTickRange(int64_t startTick, int64_t endTick) const {
             std::vector<MidiEvent> currentEvents;
-            for(int i=0; i< events.size(); ++i) {
+            for(int i=0; i< events.size(); i++) {
 
                 MidiEvent _event = events.at(i);
-
                 if (_event.tick > endTick) break;
+
                 if(startTick < _event.tick && _event.tick < endTick) {
                     currentEvents.push_back(events.at(i));
                 }
@@ -85,6 +85,7 @@ namespace Midi {
 
     struct MidiBuffer {
         std::vector<MidiMessage> messages;
+
         void addEvent(MidiEvent& event, int samplePosition) {
             messages.push_back({samplePosition, event});
             std::sort(messages.begin(), messages.end(),

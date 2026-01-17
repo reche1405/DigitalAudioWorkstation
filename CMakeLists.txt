@@ -64,6 +64,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/clipmanager.h core/clipmanager.cpp
         core/idmanager.h core/idmanager.cpp
         midi/midiclipmanager.h midi/midiclipmanager.cpp
+        midi/midinode.h midi/midinode.cpp
 
 
 

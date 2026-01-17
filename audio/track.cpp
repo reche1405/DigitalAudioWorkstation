@@ -8,8 +8,9 @@ void BaseTrack::setName(std::string name) {
     m_name = QString::fromStdString(name);
 }
 
-AudioTrack::AudioTrack(unsigned int id) : BaseTrack() {
-    m_id = id;
+AudioTrack::AudioTrack() : BaseTrack()
+
+{
     m_type = Core::TrackType::Audio;
 };
 // This is a custom process function for an audio track, there will aslos be a custom process function
