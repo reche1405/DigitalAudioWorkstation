@@ -10,7 +10,7 @@ void BaseTrack::setName(std::string name) {
 
 AudioTrack::AudioTrack(unsigned int id) : BaseTrack() {
     m_id = id;
-    m_type = TrackType::Audio;
+    m_type = Core::TrackType::Audio;
 };
 // This is a custom process function for an audio track, there will aslos be a custom process function
 // For a MIDI track.

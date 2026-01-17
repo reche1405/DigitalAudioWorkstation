@@ -2,8 +2,6 @@
 
 namespace Core {
 
-Mixer::Mixer() {}
-
 void Mixer::addNewTrack(Core::TrackType type) {
     if(type == Core::TrackType::Audio) {
         auto track = std::make_unique<Audio::AudioTrack>(m_tracks.size() + 1);
@@ -15,6 +13,8 @@ void Mixer::addNewTrack(Core::TrackType type) {
 
 void Mixer::mixMasterBuffer(size_t samplesToProcess, uint64_t writePos, uint32_t numFrames)
 {
+
+        std::fill(m_masterBuffer.begin(), m_masterBuffer.begin() + samplesToProcess , 0.0f);
     for (auto& t : m_tracks) {
         std::fill(m_trackBuffer.begin(), m_trackBuffer.begin() + samplesToProcess , 0.0f);
         // TODO: pass the current frame from this globaltimeline manager: URGENT

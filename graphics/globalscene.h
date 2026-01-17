@@ -22,13 +22,13 @@ signals:
     // This will be passed to globaltimeline.
     // This can then update it's own m_tracks.
     // And send a signal back here to add new track.
-    void requestAddTrack(Audio::TrackType type  = Audio::TrackType::Audio);
+    void requestAddTrack(Core::TrackType type  = Core::TrackType::Audio);
     void requestDeleteTrack(int trackId);
 
 public slots:
     // This will be the function that is called from the global timeline
     // It will tell the scene to implement a new graphics track.
-    void onTrackAdded(Audio::TrackType type, std::unique_ptr<Audio::BaseTrack>& track);
+    void onTrackAdded(Core::TrackType type, std::unique_ptr<Audio::BaseTrack>& track);
     void onTrackDeleted(int trackId);
 
 private:

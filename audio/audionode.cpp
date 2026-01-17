@@ -2,10 +2,10 @@
 
 namespace Audio {
 
+ProcessChain::~ProcessChain() {};
 
     void ProcessChain::process(std::vector<float>& buffer)  {
         for(auto& effect : m_effects) {
-            ProcessChain::~ProcessChain() {};
             effect->process(buffer);
         }
     }
@@ -13,6 +13,13 @@ namespace Audio {
     void ProcessChain::updateSampleRate(double sr) {
         for (auto& effect : m_effects) {
             effect->updateSampleRate(sr);
+        }
+    }
+
+    void ProcessChain::updateBPM(double bpm)
+    {
+        for (auto& effect : m_effects) {
+            effect->updateBPM(bpm);
         }
     }
 

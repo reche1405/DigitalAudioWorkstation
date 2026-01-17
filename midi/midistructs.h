@@ -80,6 +80,7 @@ namespace Midi {
     struct MidiMessage {
         int samplePosition;
         MidiEvent event;
+
     };
 
     struct MidiBuffer {

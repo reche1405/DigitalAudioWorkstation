@@ -8,8 +8,6 @@
 ProjectController::ProjectController(QWidget *parent, float bpm, int beatsPerBar, int beatLength, int sampleRate)
     : QWidget(parent)
     , ui(new Ui::ProjectController),
-    m_masterBuffer(2048, 0.0f),
-    m_trackBuffer(2048, 0.0f),
     m_audioEngine(new Audio::AudioEngine())
 {
     ui->setupUi(this);
@@ -45,8 +43,8 @@ void ProjectController::setupScene()
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-    addNewTrack(Audio::TrackType::Audio);
-    addNewTrack(Audio::TrackType::Audio);
+    addNewTrack(Core::TrackType::Audio);
+    addNewTrack(Core::TrackType::Audio);
 
 
 
@@ -66,10 +64,10 @@ void ProjectController::setupScene()
 
     clip.localEndTick = static_cast<int64_t>(durationSeconds * (m_BPM / 60.0f) * m_ppq);
 
-    if(auto audioTrack = dynamic_cast<Audio::AudioTrack*>(m_tracks.at(0).get()))   {
+    if(auto audioTrack = dynamic_cast<Audio::AudioTrack*>(m_mixer.tracks().at(0).get()))   {
         audioTrack->getSampler().addClip(clip);
-    }
 
+    }
 
     // End early stage testing purposes.
 
@@ -79,7 +77,7 @@ void ProjectController::setupScene()
 
     m_scene->setSceneRect(0,0,this->geometry().width() * 4,this->geometry().height());
     m_playhead = new Graphics::Playhead(m_scene->height(), nullptr);
-    m_scene->syncWithTracks(m_tracks);
+    m_scene->syncWithTracks(m_mixer.tracks());
     m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_view->setTransformationAnchor(QGraphicsView::NoAnchor);
     QBrush brush;
@@ -114,10 +112,7 @@ ProjectController::~ProjectController()
 }
 
 void ProjectController::addNewTrack(Core::TrackType type) {
-    if(type == Core::TrackType::Audio) {
-        auto track = std::make_unique<Audio::AudioTrack>(m_tracks.size() + 1);
-        m_tracks.push_back(std::move(track));
-    }
+    m_mixer.addNewTrack(type);
     // TODO: Once we have abstracted track, this will be an else statememnt
     // And the above will be a make uniwue Audio::AudioTrack
 }
@@ -132,40 +127,14 @@ void ProjectController::mixMasterBuffer(uint32_t numFrames) {
     size_t samplesToProcess = numFrames * 2;
 
 
-    // m_mixer.mixMasterBuffer(samplesToProcess, writePos, numFrames)
+    m_mixer.mixMasterBuffer(samplesToProcess, writePos, numFrames);
 
 
-
-
-    for (auto& t : m_tracks) {
-        std::fill(m_trackBuffer.begin(), m_trackBuffer.begin() + samplesToProcess , 0.0f);
-        // TODO: pass the current frame from this globaltimeline manager: URGENT
-        t->process(m_trackBuffer, writePos);
-
-        for(int i = 0; i < m_masterBuffer.size(); i++) {
-          m_masterBuffer[i] += m_trackBuffer[i];
-        }
-    }
-    // Master bus and gain staging can happen here.
-
-    // 3. Apply Gain Staging (e.g., -6dB is roughly 0.5f)
-    float leftGain = 0.5f;
-    float rightGain = 0.5f;
-
-    for (uint32_t i = 0; i < numFrames; ++i) {
-        // Interleaved L/R
-        m_masterBuffer[i * 2]     *= leftGain;  // Left
-        m_masterBuffer[i * 2 + 1] *= rightGain; // Right
-
-        // Hard Limiter (Simple protection)
-        m_masterBuffer[i * 2]     = std::clamp(m_masterBuffer[i * 2], -1.0f, 1.0f);
-        m_masterBuffer[i * 2 + 1] = std::clamp(m_masterBuffer[i * 2 + 1], -1.0f, 1.0f);
-    }
 
     // 4. Push to Ring Buffer
     // We try to push the entire block. If it returns less than numFrames*2,
     // it means the ring buffer is full (the audio engine is falling behind).
-    size_t pushed = m_audioEngine->ringBuffer().pushBlock(m_masterBuffer.data(), numFrames * 2);
+    size_t pushed = m_audioEngine->ringBuffer().pushBlock(m_mixer.masterBuffer().data(), numFrames * 2);
 
 }
 
@@ -189,7 +158,7 @@ void ProjectController::updatePlayheadPosition()
 }
 void ProjectController::addNewAudioTrack() {
 
-    addNewTrack(Audio::TrackType::Audio);
+    addNewTrack(Core::TrackType::Audio);
 
     //
 }

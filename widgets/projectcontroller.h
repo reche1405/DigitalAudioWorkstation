@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QGraphicsWidget>
 #include "../graphics/arrangementview.h"
+#include "../core/mixer.h"
 #include "../audio/track.h"
 #include "../audio/audiostructs.h"
 #include "../audio/projectsamplemanager.h"
@@ -36,7 +37,7 @@ public:
     int beatLength() const {return m_beatLength;}
     int sampleRate() const {return m_sampleRate; }
 
-    void addNewTrack(Audio::TrackType type = Audio::TrackType::Audio);
+    void addNewTrack(Core::TrackType type = Core::TrackType::Audio);
     void mixMasterBuffer(uint32_t numFrames);
     size_t getCurrentPlayheadFrame() const {return m_currentPlayheadFrame;}
     Audio::ProjectSampleManager m_sampler;
@@ -67,10 +68,12 @@ private:
     Midi::MidiPlaybackEngine *m_playBackEngine;
     size_t m_currentPlayheadFrame = 0;
     double m_visualX = 0.0;
-    std::vector<float> m_masterBuffer;
-    std::vector<float> m_trackBuffer;
     Graphics::Playhead *m_playhead;
-    std::vector<std::unique_ptr<Audio::BaseTrack>> m_tracks;
+    Core::Mixer m_mixer;
+
+    // std::vector<float> m_masterBuffer;
+    // std::vector<float> m_trackBuffer;
+    // std::vector<std::unique_ptr<Audio::BaseTrack>> m_tracks;
 };
 
 #endif // PROJECTCONTROLLER_H
