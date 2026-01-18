@@ -1,12 +1,6 @@
-#include "track.h"
+#include "audiotrack.h"
 
 namespace Audio {
-void BaseTrack::addEffect(std::unique_ptr<AudioNode> effect) {
-    m_chain.addEffect(std::move(effect));
-}
-void BaseTrack::setName(std::string name) {
-    m_name = QString::fromStdString(name);
-}
 
 AudioTrack::AudioTrack() : BaseTrack()
 

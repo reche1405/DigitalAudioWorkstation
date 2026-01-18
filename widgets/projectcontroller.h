@@ -6,8 +6,6 @@
 #include <QGraphicsWidget>
 #include "../graphics/arrangementview.h"
 #include "../core/mixer.h"
-#include "../audio/track.h"
-#include "../audio/audiostructs.h"
 #include "../audio/audioassetmanager.h"
 #include "../audio/audioengine.h"
 #include "../graphics/globalscene.h"

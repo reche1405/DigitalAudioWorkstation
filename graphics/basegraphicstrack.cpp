@@ -2,7 +2,7 @@
 #include <qpainter.h>
 
 BaseGraphicsTrack::BaseGraphicsTrack(int index, qreal x, qreal y, qreal width, qreal height,
-                                     QPen& pen, QBrush& brush, Audio::BaseTrack* trackData, QGraphicsItem* parent)
+                                     QPen& pen, QBrush& brush, Core::BaseTrack* trackData, QGraphicsItem* parent)
     : QObject(),
     QGraphicsRectItem(x, y, width, height, parent),
     m_pen(pen),

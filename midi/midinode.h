@@ -9,8 +9,9 @@ class MidiNode : public Core::Node
 {
 public:
     MidiNode() = default;
+    virtual ~MidiNode() {};
     virtual void processMidi(MidiBuffer &buffer) = 0;
-    void updateBPM(double bpm) override {
+    virtual void updateBPM(double bpm) override {
         m_bpm = bpm;
     }
 
@@ -24,6 +25,7 @@ protected:
     std::vector<std::unique_ptr<MidiNode>> m_midiEffects;
 public:
     MidiChain() = default;
+    ~MidiChain() {};
     void processMidi(MidiBuffer&buffer) override {
         for(auto& effect : m_midiEffects) {
             effect->processMidi(buffer);
@@ -35,7 +37,7 @@ public:
         }
     }
     void addEffect(std::unique_ptr<MidiNode> effect) {
-        m_midiEffects.push_back(effect);
+        m_midiEffects.push_back(std::move(effect));
     }
     void updateBPM(double bpm) override {
         for(auto& effect : m_midiEffects) {

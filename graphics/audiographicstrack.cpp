@@ -3,7 +3,7 @@
 
 #include "../core/gridmanager.h"
 AudioGraphicsTrack::AudioGraphicsTrack(int index, qreal x, qreal y, qreal width, qreal height,
-                                       QPen& pen, QBrush& brush, Audio::BaseTrack* trackData, QGraphicsItem *parent) :
+                                       QPen& pen, QBrush& brush, Core::BaseTrack* trackData, QGraphicsItem *parent) :
     BaseGraphicsTrack(index, x, y, width, height, pen, brush, trackData, parent) {
 
 }

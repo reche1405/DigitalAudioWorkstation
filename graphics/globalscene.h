@@ -3,7 +3,6 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include "../audio/track.h"
 #include <QGraphicsScene>
 #include "basegraphicstrack.h"
 
@@ -12,8 +11,9 @@ class GlobalScene : public QGraphicsScene
 {
 public:
     explicit GlobalScene(QObject *parent = nullptr);
-    void syncWithTracks(const std::vector<std::unique_ptr<Audio::BaseTrack>>& tracks);
+    void syncWithTracks(const std::vector<std::unique_ptr<Core::BaseTrack>>& tracks);
     qreal trackHeightSum();
+    bool trackExists(Core::ID& searchId);
 
 
 
@@ -28,7 +28,7 @@ signals:
 public slots:
     // This will be the function that is called from the global timeline
     // It will tell the scene to implement a new graphics track.
-    void onTrackAdded(Core::TrackType type, std::unique_ptr<Audio::BaseTrack>& track);
+    void onTrackAdded(Core::TrackType type, std::unique_ptr<Core::BaseTrack>& track);
     void onTrackDeleted(int trackId);
 
 private:

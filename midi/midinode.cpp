@@ -2,6 +2,5 @@
 
 namespace Midi {
 
-MidiNode::MidiNode() {}
 
 } // namespace Midi

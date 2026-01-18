@@ -8,7 +8,7 @@ class AudioGraphicsTrack : public BaseGraphicsTrack
     Q_OBJECT
 public:
     AudioGraphicsTrack(int index, qreal x, qreal y, qreal width, qreal height,
-                       QPen& pen, QBrush& brush, Audio::BaseTrack* trackData, QGraphicsItem *parent);
+                       QPen& pen, QBrush& brush, Core::BaseTrack* trackData, QGraphicsItem *parent);
     ~AudioGraphicsTrack() override = default;
     void drawContent(QPainter* painter) override;
     void syncWithTrack() override;

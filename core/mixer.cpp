@@ -4,7 +4,7 @@ namespace Core {
 
 void Mixer::addNewTrack(Core::TrackType type) {
     if(type == Core::TrackType::Audio) {
-        auto track = std::make_unique<Audio::AudioTrack>(m_tracks.size() + 1);
+        auto track = std::make_unique<Audio::AudioTrack>();
         m_tracks.push_back(std::move(track));
     }
     // TODO: Once we have abstracted track, this will be an else statememnt

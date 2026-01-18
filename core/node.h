@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <vector>
-#endif // NODE_H
 namespace Core {
 
 class Node {
@@ -32,3 +31,4 @@ public:
     void updateSampleRate(double sr);
 };
 }
+#endif // NODE_H

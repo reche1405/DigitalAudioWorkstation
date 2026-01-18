@@ -1,6 +1,6 @@
 #ifndef BASEGRAPHICSTRACK_H
 #define BASEGRAPHICSTRACK_H
-#include "../audio/track.h"
+#include "../audio/audiotrack.h"
 #include <QGraphicsItem>
 #include <QObject>
 
@@ -11,7 +11,7 @@ class BaseGraphicsTrack : public QObject, public QGraphicsRectItem
 
 public:
     BaseGraphicsTrack(int index, qreal x, qreal y, qreal width, qreal height,
-                      QPen& pen, QBrush& brush, Audio::BaseTrack* trackData , QGraphicsItem *parent = nullptr);
+                      QPen& pen, QBrush& brush, Core::BaseTrack* trackData , QGraphicsItem *parent = nullptr);
     virtual ~BaseGraphicsTrack();
     qreal trackHeight()  const {return m_trackHeight; }
     QColor color() const { return m_color; }
@@ -26,15 +26,16 @@ public:
         drawBackground(painter);
        drawContent(painter);
     }
+    Core::ID& id() const {return m_data->id(); }
 
 protected:
-    Audio::BaseTrack* m_data;
-    int m_index;
+    Core::BaseTrack* m_data;
     QColor m_color;
     qreal m_trackHeight;
     QString m_title;
     QPen& m_pen;
     QBrush& m_brush;
+    int m_index;
 };
 
 #endif // BASEGRAPHICSTRACK_H

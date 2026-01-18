@@ -9,33 +9,35 @@ GlobalScene::GlobalScene(QObject *parent)
 
 }
 
-void GlobalScene::syncWithTracks(const std::vector<std::unique_ptr<Audio::BaseTrack>>& tracks) {
+void GlobalScene::syncWithTracks(const std::vector<std::unique_ptr<Core::BaseTrack>>& tracks) {
     qreal x = 0;
     qreal defaultTrackHeight = 70;
     qreal y = 25;
     QPen pen= QPen(QColor(20,20,20,255));
     QBrush brush = QBrush(QColor(255,100,100,255));
     for (auto& track: tracks) {
-        if(!(m_guiTracks.count(track->id()) > 0)) {
+        auto it =  find(tracks.begin(),tracks.end(), track);
+        int index = it - tracks.begin();
+        if(!(trackExists(track->id()))) {
             BaseGraphicsTrack* newItem = nullptr;
             switch(track->type()) {
             case Core::TrackType::Audio:
                 newItem = new AudioGraphicsTrack(
-                    track->id(),x,y,sceneRect().width(),defaultTrackHeight,
+                    index,x,y,sceneRect().width(),defaultTrackHeight,
                     pen, brush, track.get(), nullptr);
                 break;
             case Core::TrackType::MIDI:
                 newItem = new AudioGraphicsTrack(
-                    track->id(),x,y,this->sceneRect().width(),defaultTrackHeight,
+                    index,x,y,this->sceneRect().width(),defaultTrackHeight,
                     pen, brush, track.get(), nullptr);
                 break;
             default:
                 newItem = new AudioGraphicsTrack(
-                    track->id(),x,y,this->sceneRect().width(),defaultTrackHeight,
+                    index,x,y,this->sceneRect().width(),defaultTrackHeight,
                     pen, brush, track.get(), nullptr);
                 break;
             }
-            const int id = track->id();
+            const int id = index;
             m_guiTracks.emplace(id, *newItem);
             addItem(newItem);
             newItem->setColor(QColor(70,130,255,255));
@@ -52,5 +54,17 @@ qreal GlobalScene::trackHeightSum() {
         heightSum += value.rect().height();
     }
     return heightSum;
+}
+
+bool GlobalScene::trackExists(Core::ID &searchId)
+{
+    std::map<int, BaseGraphicsTrack&>::iterator it;
+    for(auto const& [key, value] : m_guiTracks) {
+        if(value.id().value == searchId.value) {
+            return true;
+        }
+    }
+    return false;
+
 }
 

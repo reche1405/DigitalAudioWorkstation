@@ -46,7 +46,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         audio/audiostructs.h
         audio/audioengine.h audio/audioengine.cpp
         audio/audionode.h audio/audionode.cpp
-        audio/track.h audio/track.cpp
+        audio/audiotrack.h audio/audiotrack.cpp
         audio/audioclipmanager.cpp
         audio/audioclipmanager.h
         graphics/basesceneclip.h graphics/basesceneclip.cpp
@@ -65,6 +65,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/idmanager.h core/idmanager.cpp
         midi/midiclipmanager.h midi/midiclipmanager.cpp
         midi/midinode.h midi/midinode.cpp
+        instruments/instrumentnode.h instruments/instrumentnode.cpp
+        core/track.h core/track.cpp
+        midi/miditrack.h midi/miditrack.cpp
 
 
 
