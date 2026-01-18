@@ -46,38 +46,6 @@ namespace Audio {
         }
         m_transport->updatePosition(samplesRead / 2);
         return 0;
-        // std::fill(buffer, buffer +(nBufferFrames * 2), 0.0f);
-        // if (!m_transport) return 0;
-
-        // if(!m_transport->isPlaying()) {
-        //     for(unsigned int i=0; i<nBufferFrames*2; i++) buffer[i] = 0.001f;
-        //     return 0;}
-
-
-        // while(completedSamples < totalFramesToProcess) {
-        //     m_debugCounter++;
-        //     if (m_debugCounter % 100 == 0) {
-        //         //qDebug() << "Callback active. Current Frame:" << m_transport->getCurrentFrame();
-        //     }
-        //     unsigned int samplesRemaining = totalFramesToProcess - completedSamples;
-        //     uint32_t chunk = m_transport->getSamplesUntilLoopEnd(samplesRemaining);
-
-        //     if (chunk > 0) {
-
-        //         renderIntoBuffer(buffer + (completedSamples * 2 ), chunk, m_transport->getCurrentFrame());
-        //         m_transport->updatePosition(chunk);
-        //         completedSamples += chunk;
-        //     } else {
-        //         if(m_transport->isLooped()) {
-        //             m_transport->setToLoopStart();
-        //                 if (m_transport->getSamplesUntilLoopEnd(samplesRemaining) == 0) break;
-        //         } else {
-        //             break;
-        //         }
-        //     }
-
-        // }
-        // return 0;
     }
 
 }

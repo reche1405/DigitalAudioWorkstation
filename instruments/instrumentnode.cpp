@@ -1,6 +1,6 @@
 #include "instrumentnode.h"
 
-namespace Intruments {
+namespace Instruments {
 
 
 } // namespace Intruments

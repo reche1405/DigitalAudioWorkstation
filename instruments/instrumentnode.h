@@ -3,7 +3,7 @@
 
 #include "../audio/audionode.h"
 #include "../midi/midinode.h"
-namespace Intruments {
+namespace Instruments {
 
 class InstrumentNode : public Audio::AudioNode, public Midi::MidiNode
 {
