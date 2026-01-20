@@ -2,7 +2,7 @@
 #define MIXER_H
 
 #include <memory>
-#include "../audio/audiotrack.h"
+#include "../core/track.h"
 #include "../audio/audionode.h"
 #include <vector>
 namespace Core {

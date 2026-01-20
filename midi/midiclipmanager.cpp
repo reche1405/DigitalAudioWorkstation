@@ -21,6 +21,7 @@ std::vector<MidiEvent> MidiClipManager::getEventsForBuffer(int64_t readTick, int
 void MidiClipManager::mixEventsToMidiBuffer(std::vector<MidiEvent> events, MidiBuffer &midiBuffer, int64_t readTick)
 {
     for(auto& event : events ) {
+        // TODO: this event offset needs to be
         int eventOffset = event.tick - readTick;
         MidiEvent _event = event;
         midiBuffer.addEvent(_event, eventOffset);

@@ -19,7 +19,7 @@ ProjectController::ProjectController(QWidget *parent, float bpm, int beatsPerBar
     setupScene();
 
 
-    // In GlobalTimeline Constructor
+
     QTimer* timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this]() {
         if(!m_audioEngine->transport().isPlaying()) {
@@ -28,7 +28,7 @@ ProjectController::ProjectController(QWidget *parent, float bpm, int beatsPerBar
 
 
         // Try to keep the buffer filled up to a certain point
-        size_t targetLevel = 8192; // 2048 stereo frames
+        size_t targetLevel = 8184; // 4092 stereo frames
         size_t currentLevel = m_audioEngine->ringBuffer().availableSamples() / 2;
         updatePlayheadPosition();
 

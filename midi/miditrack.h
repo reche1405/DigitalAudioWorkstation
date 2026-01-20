@@ -27,7 +27,7 @@ public:
     void addEvent(MidiEvent event, int samplePosition) {m_midiBuffer.addEvent(event, samplePosition);}
 private:
     MidiChain m_midiChain;
-    std::unique_ptr<Instruments::InstrumentNode> instrument;
+    std::unique_ptr<Instruments::InstrumentNode> m_instrument;
     Audio::ProcessChain m_processChain;
     MidiBuffer m_midiBuffer;
     MidiClipManager m_clipManager;
