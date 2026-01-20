@@ -10,7 +10,7 @@ class InstrumentNode : public Audio::AudioNode, public Midi::MidiNode
 public:
     virtual ~InstrumentNode() = default;
     virtual void processMidi() = 0;
-    virtual void process(std::vector<float>& audioBuffer, Midi::MidiBuffer& midiBuffer);
+    virtual void process(Audio::AudioBuffer& audioBuffer, Midi::MidiBuffer& midiBuffer);
 };
 
 } // namespace Intruments

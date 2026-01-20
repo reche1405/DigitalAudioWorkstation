@@ -28,7 +28,7 @@ ProjectController::ProjectController(QWidget *parent, float bpm, int beatsPerBar
 
 
         // Try to keep the buffer filled up to a certain point
-        size_t targetLevel = 8184; // 4092 stereo frames
+        size_t targetLevel = 8192; // 4092 stereo frames
         size_t currentLevel = m_audioEngine->ringBuffer().availableSamples() / 2;
         updatePlayheadPosition();
 
@@ -142,7 +142,7 @@ void ProjectController::mixMasterBuffer(uint32_t numFrames) {
 void ProjectController::update() {
     size_t safetyMargin = 8192; // How many frames we want waiting in the pipe
     int safetyCounter = 0;
-    while ((m_audioEngine->ringBuffer().availableSamples() / 2) < safetyMargin && safetyCounter < 20) {
+    while ((m_audioEngine->ringBuffer().availableSamples() / 2) < safetyMargin && safetyCounter < 17) {
         mixMasterBuffer(512); // Process in blocks of 512
         safetyCounter++;
     }
@@ -162,6 +162,11 @@ void ProjectController::addNewAudioTrack() {
     addNewTrack(Core::TrackType::Audio);
 
     //
+}
+
+void ProjectController::addNewMidiTrack()
+{
+    addNewTrack(Core::TrackType::MIDI);
 }
 qreal ProjectController::getTrackHeightSum() {
     return 1;

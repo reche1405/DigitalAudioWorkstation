@@ -4,7 +4,7 @@ namespace Audio {
 
 ProcessChain::~ProcessChain() {};
 
-    void ProcessChain::process(std::vector<float>& buffer)  {
+    void ProcessChain::process(AudioBuffer& buffer)  {
         for(auto& effect : m_effects) {
             effect->process(buffer);
         }

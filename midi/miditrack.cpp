@@ -6,10 +6,10 @@ MidiTrack::MidiTrack() : BaseTrack() {
       m_type = Core::TrackType::MIDI;
 }
 
-void MidiTrack::process(std::vector<float> &buffer, size_t currentGlobalFrame, int numChannels)
+void MidiTrack::process(Audio::AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels)
 {
     Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
-    std::fill(buffer.begin(), buffer.end(), 0.0f);
+    std::fill(buffer.samples.begin(), buffer.samples.end(), 0.0f);
     // First calculate all of the buffer information in ticks.
     int64_t currentGlobalTick = manager.framesToTicks(currentGlobalFrame);
     size_t bufferEndFrame = buffer.size() / numChannels;

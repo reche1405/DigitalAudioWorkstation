@@ -23,8 +23,8 @@ public:
     void setGlobalStartFrame(AudioClip clip, size_t globalStart);
     void setLocalStartFrame(AudioClip clip, size_t localStart);
     void setLocalEndFrame(AudioClip clip, size_t endFrame);
-    void process(std::vector<float>& buffer, size_t currentGlobalFrame, int numChannels);
-    void mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer, size_t bufferOffset, size_t assetStartFrame, int numChannels);
+    void process(AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels);
+    void mixClipToBuffer(const AudioClip& clip, AudioBuffer& buffer, size_t bufferOffset, size_t assetStartFrame, int numChannels);
     void prepare(uint32_t sampleRate) override {m_projectSampleRate = sampleRate;};
 };
 

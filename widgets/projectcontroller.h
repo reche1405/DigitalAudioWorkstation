@@ -40,7 +40,7 @@ public:
     size_t getCurrentPlayheadFrame() const {return m_currentPlayheadFrame;}
     Audio::AudioAssetManager m_sampler;
     void addNewAudioTrack();
-    // void addNewMidiTrack();
+    void addNewMidiTrack();
     qreal getTrackHeightSum();
     void setupScene();
     void play();

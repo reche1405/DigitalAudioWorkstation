@@ -5,7 +5,7 @@ namespace Audio {
 
 AudioClipManager::AudioClipManager() {}
 
-void AudioClipManager::process(std::vector<float>& buffer, size_t currentGlobalFrame, int numChannels) {
+void AudioClipManager::process(AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels) {
     size_t bufferSizeFrames = buffer.size() / numChannels;
     // TODO: Implement a clip counter and order them by globalStartFrame.
     // Rather than add aclip counter that incrememnts, I have sorted the clips by their start time when a clip is added.
@@ -33,7 +33,7 @@ void AudioClipManager::process(std::vector<float>& buffer, size_t currentGlobalF
     }
 };
 
-void AudioClipManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>& buffer,
+void AudioClipManager::mixClipToBuffer(const AudioClip& clip, AudioBuffer& buffer,
         size_t bufferOffset, size_t assetStart, int numChannels) {
     Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
     const auto& samples = clip.asset->audioData->samples;
@@ -60,7 +60,7 @@ void AudioClipManager::mixClipToBuffer(const AudioClip& clip, std::vector<float>
 
             float interpolated = Core::Math::lerp(sA, sB, fraction);
 
-            buffer[(bufferOffset + f) * numChannels + ch] += interpolated;
+            buffer.samples[(bufferOffset + f) * numChannels + ch] += interpolated;
         }
     }
 }

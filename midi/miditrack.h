@@ -11,9 +11,9 @@ class MidiTrack : public Core::BaseTrack
 {
 public:
     MidiTrack();
-    void processAudio(std::vector<float>& buffer, size_t currentGlobalFrame, int numCHannels);
+    void processAudio(Audio::AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels);
     void processMidi(size_t currentGlobalFrame, int numChannels);
-    void process(std::vector<float>& buffer, size_t currentGlobalFrame, int numCHannels);
+    void process(Audio::AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels);
     // The plan is for process to call process midi in which the midi clip, any midi effects, and
     // Eventually the midi dispatcher process a vector of midi events into a midi buffer.
 

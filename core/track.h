@@ -21,7 +21,7 @@ public:
         m_id(Core::IdManager::instance().generateId())
     {};
     virtual ~BaseTrack() {};
-    virtual void process(std::vector<float>& buffer, size_t playheadFrame) = 0;
+    virtual void process(Audio::AudioBuffer& buffer, size_t playheadFrame) = 0;
     void addEffect(std::unique_ptr<Audio::AudioNode> effect);
     void setName(std::string newName);
     Core::ID& id() const { return m_id; }

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include "../audio/audiostructs.h"
 namespace Core {
 
 class Node {
@@ -25,7 +26,7 @@ public:
     void process() {
 
     };
-    void processAudio(std::vector<float>& buffer);
+    void processAudio(Audio::AudioBuffer& buffer);
     // void processMidi(MidiBuffer &midi) {
 
     void updateSampleRate(double sr);

@@ -10,6 +10,26 @@ namespace Audio {
         // A buffer of samples
         std::vector<float> samples;
         int sampleRate;
+        int frames(int numChannels) {
+            return samples.size() / numChannels;
+        }
+        int size() const {
+            return samples.size();
+        }
+        void init(int size, float defValue) {
+            setSize(size);
+            setDefault(defValue);
+        }
+        void setSize(int size) {
+            samples.resize(size);
+        }
+        void setDefault(float value) {
+            std::fill(samples.begin(), samples.end(), 0.0f);
+        }
+        float* data() {
+            return samples.data();
+        }
+
     };
 
     struct ChannelPlot {

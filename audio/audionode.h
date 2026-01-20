@@ -11,7 +11,7 @@ class AudioNode : public Core::Node
 public:
     AudioNode() = default;
     virtual ~AudioNode() {};
-    virtual void process(std::vector<float>& buffer) = 0;
+    virtual void process(AudioBuffer& buffer) = 0;
     virtual void updateSampleRate(double sr) = 0;
 };
 
@@ -22,7 +22,7 @@ public:
     ProcessChain() = default;
     ~ProcessChain();
     void addEffect(std::unique_ptr<AudioNode> effect);
-    void process(std::vector<float>& buffer) override;
+    void process(AudioBuffer& buffer) override;
     void updateSampleRate(double sr) override;
     void updateBPM(double bpm) override;
 };
