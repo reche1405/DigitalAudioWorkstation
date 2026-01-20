@@ -24,6 +24,16 @@ public:
     Core::ID& id() const {return m_id; }
 };
 
+class Gain : public Parameter {
+
+    Gain() :
+        Parameter(Core::ParamConstraints{Core::ParameterType::Continuous, 0.0f, 1.0f, 20.0f, 0}) {}
+};
+class Pan : public Parameter {
+    Pan() :
+        Parameter(Core::ParamConstraints{Core::ParameterType::Continuous, -1.0f, 1.0f, 40.0f, 0}) {}
+};
+
 } // namespace Audio
 
 #endif // PARAMETER_H
