@@ -25,11 +25,32 @@ private:
     // The position within the buffer to write to in the engine thread.
     std::atomic<size_t> writePos{0};
 
+
+    // Tells the read buffer to start at position index 0 in
+    // whichever buffer used to be the write buffer.
+    void swapBuffer() noexcept {
+        int readIdx = readIndex.load(std::memory_order_acquire);
+        int newIdx = (readIdx + 1) % 2;
+        readIndex.store(readIdx, std::memory_order_release);
+
+        readPos.store(0, std::memory_order_release);
+    }
+
+    friend void swap(DoubleBuffer a, DoubleBuffer b) noexcept {
+        using std::swap;
+        swap(a.buffers, b.buffers);
+        swap(a.readIndex, b.readIndex);
+        swap(a.writeIndex, b.writeIndex);
+        swap(a.readPos, b.readPos);
+        swap(a.writePos, b.writePos);
+        swap(a.m_capacity, b.m_capacity);
+    }
+
 public:
 
     // Write buffer logic for use in the audio engine thread.
 
-    // Get the write buffer to be filled.
+    // Get a pointer the memory address of the write buffer to be filled.
     T* getWriteBuffer() noexcept {
         return buffers[writeIndex.load(std::memory_order_acquire)];
 
@@ -55,16 +76,27 @@ public:
         writePos.store(pos + count, std::memory_order_release);
     }
 
-    // Commit Write
-    // TODO: Implement commitWrite functionality.
+    // Commits the written block and switches the write buffer index if necessary.
+    void commitWrite() noexcept {
+        writePos.store(0, std::memory_order_release);
 
+        int writeIdx = writeIndex.load(std::memory_order_acquire);
+        int readIdx = readPos.load(std::memory_order_acquire);
+        if (writeIdx != readIdx) {
+            int newWriteIdx = (writeIdx + 1) % 2;
+            writeIndex.store(newWriteIdx, std::memory_order_release);
+        }
+    }
 
+    size_t getAvialableWriteSamples() const noexcept {
+        return m_capacity - writePos.load(std::memory_order_relaxed);
+    }
 
 
     // Read buffer logic for use in the audio playback thread.
 
 
-    // Return the read buffer.
+    // Returns a pointer to the address in memory for the read buffer.
     T* getReadBuffer() noexcept {
         return buffers[readIndex.load(std::memory_order_acquire)];
     }
@@ -84,7 +116,7 @@ public:
 
         if(readPos >= m_capacity) {
 
-            //swapBuffers();
+            swapBuffer();
         }
         return sample;
     }
@@ -97,9 +129,39 @@ public:
         readPos.store(pos + count, std::memory_order_release);
         if(readPos >= m_capacity) {
 
-            //swapBuffers();
+            swapBuffer();
         }
     }
+
+    bool isNewDataAvailable() const noexcept {
+        return readIndex.load(std::memory_order_acquire) !=
+               writeIndex.load(std::memory_order_acquire);
+    }
+
+    size_t getAvailableReadSamples() const noexcept {
+        return m_capacity - readPos.load(std::memory_order_relaxed);
+    }
+
+    // Buffer mamanagement
+
+    void clear() noexcept {
+        for(int i=0; i < 2; i++) {
+            std::fill_n(buffers[i], m_capacity, T(0));
+        }
+        readPos.store(0);
+        writePos.store(0);
+
+        readIndex.store(0);
+        writeIndex.store(1);
+
+    }
+
+    size_t capacity() const noexcept {return m_capacity; }
+
+
+
+
+
 };
 }; // namespace Core
 #endif // DOUBLEBUFFER_H

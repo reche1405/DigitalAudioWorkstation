@@ -26,7 +26,7 @@ with added functionality,
 however in the future it will enable us to process lookaheads.
 </p>
 <hr/>
-<h3>Audio Engine Read Thread</h3>
+<h3>Audio Engine Write Thread</h3>
 <p> A dedicated thread that allows me to implement the use of my 
 double buffers. rather than hacking the mixMasterbuffer into the 
 gui thread where it is currently.
