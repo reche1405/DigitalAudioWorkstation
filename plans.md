@@ -1,20 +1,6 @@
 <html>
+
 <head>
-<style>
-* {
-box-sizing:border-box;
-}
-body {
-padding:0;
-margin:0;
-}
-h1 {
-    font-weight:200; 
-    padding:0;
-
-}
-
-</style>
 </head>
 <body>
 <div class="headerWrapper">
@@ -78,6 +64,12 @@ If we want a time signature map the same would apply however time signature is n
 so we can just store a single snapshot including the int beats per bar and bars per beat.
 </p>
 
-<p></p>
+<hr/>
+<date>21/01/2026</date>
+
+```mermaid
+flowchart LR
+    Input --> Processing --> Output
+```
 </body>
 </html>
