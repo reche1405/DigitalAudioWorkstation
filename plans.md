@@ -4,7 +4,7 @@
 </head>
 <body>
 <div class="headerWrapper">
-<h1>Plans</h1>
+<h1>Plans <date>21/01/2026</date></h1>
 </div>
 <h3>Track Double Buffer</h3>
 
@@ -65,11 +65,14 @@ so we can just store a single snapshot including the int beats per bar and bars 
 </p>
 
 <hr/>
-<date>21/01/2026</date>
+
 
 ```mermaid
 flowchart LR
-    Input --> Processing --> Output
+    Audio Thread --> Double Buffer Write functions --> Store buffers
+    
+flowchart LR
+Audio Callback --> Double Buffer Read functions --> Read buffers
 ```
 </body>
 </html>
