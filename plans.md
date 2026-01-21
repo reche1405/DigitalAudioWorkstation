@@ -69,10 +69,11 @@ so we can just store a single snapshot including the int beats per bar and bars 
 
 ```mermaid
 flowchart LR
-    Audio Thread --> Double Buffer Write functions --> Store buffers
-    
+    EngineThread --> DoubleBufferWrite --> StoreBuffers
+```
+```mermaid
 flowchart LR
-Audio Callback --> Double Buffer Read functions --> Read buffers
+AudioCallback --> DoubleBufferRead--> ReadBuffers
 ```
 </body>
 </html>
