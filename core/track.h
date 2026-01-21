@@ -10,14 +10,13 @@ protected:
     bool m_isMuted = false;
     QString m_name;
     Core::ID& m_id ;
-    Core::Parameter m_gain;
-    Core::Parameter m_pan;
+    Core::Gain m_gain;
+    Core::Pan m_pan;
     Audio::ProcessChain m_chain;
     Core::TrackType m_type;
 
 public:
-    BaseTrack() : m_gain(Core::ParamConstraints{Core::ParameterType::Continuous, 0.0f, 1.0f, 20.0f, 0}),
-        m_pan(Core::ParamConstraints{Core::ParameterType::Continuous, -1.0f, 1.0f, 40.0f, 0}),
+    BaseTrack() :
         m_id(Core::IdManager::instance().generateId())
     {};
     virtual ~BaseTrack() {};

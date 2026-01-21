@@ -48,4 +48,31 @@ namespace Audio {
         return 0;
     }
 
+    void AudioEngine::addNewTrack(Core::TrackType type)
+    {
+        m_mixer.addNewTrack(type);
+    }
+
+    void AudioEngine::mixMasterBuffer(uint32_t numFrames)
+    {
+        if(!m_transport->isPlaying()) {
+            return;
+        }
+        int64_t playhead = m_transport->getCurrentFrame();
+        int64_t waiting = m_ringBuffer->availableSamples() / 2;
+        int64_t writePos = playhead + waiting;
+        size_t samplesToProcess = numFrames * 2;
+
+
+        m_mixer.mixMasterBuffer(samplesToProcess, writePos, numFrames);
+
+
+
+        // 4. Push to Ring Buffer
+        // We try to push the entire block. If it returns less than numFrames*2,
+        // it means the ring buffer is full (the audio engine is falling behind).
+        size_t pushed = m_ringBuffer->pushBlock(m_mixer.masterBuffer().data(), numFrames * 2);
+
+    }
+
 }

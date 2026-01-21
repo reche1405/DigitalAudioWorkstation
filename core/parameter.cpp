@@ -2,14 +2,15 @@
 
 namespace Core {
 
-Parameter::Parameter(Core::ParamConstraints info) :
+Parameter::Parameter(Core::ParamConstraints info, std::string label) :
     m_constraints(info),
     m_currentValue(info.min),
     m_targetValue(info.min),
     m_id(Core::IdManager::instance().generateId())
 
-{
 
+{
+m_title = label;
 }
 
 void Parameter::updateSampleRate(double sr) {

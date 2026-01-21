@@ -2,8 +2,6 @@
 #define ADSR_H
 #include "../core/parameter.h"
 namespace Instruments {
-
-
 class ADSR
 {
 public:
@@ -15,10 +13,11 @@ public:
 
 
 private:
-    Core::Parameter m_attack;
-    Core::Parameter m_decay;
-    Core::Parameter m_sustain;
-    Core::Parameter m_release;
+    Core::Attack m_attack;
+    Core::Decay m_decay;
+    Core::Sustain m_sustain;
+    Core::Release m_release;
+
 };
 
 } // namespace Instruments

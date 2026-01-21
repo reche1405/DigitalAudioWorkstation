@@ -9,7 +9,6 @@ namespace Audio {
     struct AudioBuffer {
         // A buffer of samples
         std::vector<float> samples;
-        int sampleRate;
         int frames(int numChannels) {
             return samples.size() / numChannels;
         }
@@ -63,6 +62,7 @@ namespace Audio {
         int64_t fadeOutTicks = 0;
 
     };
+
 
 
 }

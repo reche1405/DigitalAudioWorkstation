@@ -65,7 +65,7 @@ void ProjectController::setupScene()
 
     clip.localEndTick = static_cast<int64_t>(durationSeconds * (m_BPM / 60.0f) * m_ppq);
 
-    if(auto audioTrack = dynamic_cast<Audio::AudioTrack*>(m_mixer.tracks().at(0).get()))   {
+    if(auto audioTrack = dynamic_cast<Audio::AudioTrack*>(m_audioEngine->mixer().tracks().at(0).get()))   {
         audioTrack->getSampler().addClip(clip);
 
     }
@@ -78,7 +78,7 @@ void ProjectController::setupScene()
 
     m_scene->setSceneRect(0,0,this->geometry().width() * 4,this->geometry().height());
     m_playhead = new Graphics::Playhead(m_scene->height(), nullptr);
-    m_scene->syncWithTracks(m_mixer.tracks());
+    m_scene->syncWithTracks(m_audioEngine->mixer().tracks());
     m_view->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     m_view->setTransformationAnchor(QGraphicsView::NoAnchor);
     QBrush brush;
@@ -113,30 +113,13 @@ ProjectController::~ProjectController()
 }
 
 void ProjectController::addNewTrack(Core::TrackType type) {
-    m_mixer.addNewTrack(type);
+    m_audioEngine->addNewTrack(type);
     // TODO: Once we have abstracted track, this will be an else statememnt
     // And the above will be a make uniwue Audio::AudioTrack
 }
 
 void ProjectController::mixMasterBuffer(uint32_t numFrames) {
-    if(!m_audioEngine->transport().isPlaying()) {
-        return;
-    }
-    int64_t playhead = m_audioEngine->transport().getCurrentFrame();
-    int64_t waiting = m_audioEngine->ringBuffer().availableSamples() / 2;
-    int64_t writePos = playhead + waiting;
-    size_t samplesToProcess = numFrames * 2;
-
-
-    m_mixer.mixMasterBuffer(samplesToProcess, writePos, numFrames);
-
-
-
-    // 4. Push to Ring Buffer
-    // We try to push the entire block. If it returns less than numFrames*2,
-    // it means the ring buffer is full (the audio engine is falling behind).
-    size_t pushed = m_audioEngine->ringBuffer().pushBlock(m_mixer.masterBuffer().data(), numFrames * 2);
-
+    m_audioEngine->mixMasterBuffer(numFrames);
 }
 
 void ProjectController::update() {

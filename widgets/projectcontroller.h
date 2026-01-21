@@ -68,7 +68,6 @@ private:
     size_t m_currentPlayheadFrame = 0;
     double m_visualX = 0.0;
     Graphics::Playhead *m_playhead;
-    Core::Mixer m_mixer;
 
     // std::vector<float> m_masterBuffer;
     // std::vector<float> m_trackBuffer;

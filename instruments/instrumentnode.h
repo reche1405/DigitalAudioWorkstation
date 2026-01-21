@@ -11,6 +11,10 @@ public:
     virtual ~InstrumentNode() = default;
     virtual void processMidi() = 0;
     virtual void process(Audio::AudioBuffer& audioBuffer, Midi::MidiBuffer& midiBuffer);
+    std::string title() const {return m_title;}
+    void setTitle(std::string newTitle) {m_title = newTitle; }
+private:
+    std::string m_title;
 };
 
 } // namespace Intruments

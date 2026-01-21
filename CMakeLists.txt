@@ -69,6 +69,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/track.h core/track.cpp
         midi/miditrack.h midi/miditrack.cpp
         instruments/adsr.h instruments/adsr.cpp
+        core/doublebuffer.h
 
 
 

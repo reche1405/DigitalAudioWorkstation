@@ -19,6 +19,7 @@ public:
     }
     void pause() {
         m_isPlaying.store(false);
+        m_currentFrame = 0;
     }
     void toggleLoop();
 

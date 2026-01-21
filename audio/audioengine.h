@@ -4,6 +4,8 @@
 #include "../core/transport.h"
 #include "RtAudio.h"
 #include "QDebug"
+#include <thread>
+#include "../core/mixer.h"
 namespace Audio {
 
     class AudioEngine
@@ -27,12 +29,22 @@ namespace Audio {
         void renderIntoBuffer(float* buffer, uint32_t chunk, int64_t startFrame);
 
         void initialize();
-
         void play() const {m_transport->play();}
         void pause() const {m_transport->pause();}
 
+
+
+        void addNewTrack(Core::TrackType type = Core::TrackType::Audio);
+        void mixMasterBuffer(uint32_t numFrames);
+
         Core::Transport& transport() const {return *m_transport;}
         Core::RingBuffer<float>& ringBuffer() const {return *m_ringBuffer;}
+        Core::Mixer& mixer() {return m_mixer;}
+
+
+
+        void engineLoop();
+
     private:
         RtAudio m_dac;
         RtAudio::StreamParameters m_parameters;
@@ -41,6 +53,8 @@ namespace Audio {
         Core::RingBuffer<float> *m_ringBuffer;
         Core::Transport *m_transport;
         int m_debugCounter = 0;
+        Core::Mixer m_mixer;
+        std::thread m_engineThread;
     };
 }
 
