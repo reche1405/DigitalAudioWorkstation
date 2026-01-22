@@ -1,6 +1,7 @@
 #ifndef TRACK_H
 #define TRACK_H
 
+#include "audiodoublebuffer.h"
 #include "parameter.h"
 #include "../audio/audionode.h"
 namespace Core {
@@ -14,6 +15,7 @@ protected:
     Core::Pan m_pan;
     Audio::ProcessChain m_chain;
     Core::TrackType m_type;
+    AudioDoubleBuffer m_audioBuffer{256};
 
 public:
     BaseTrack() :

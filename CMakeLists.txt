@@ -74,6 +74,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/audiodoublebuffer.h core/audiodoublebuffer.cpp
         core/doublebuffer.cpp
         core/audiothreadpool.h core/audiothreadpool.cpp
+        core/settings/audiosettings.h core/settings/audiosettings.cpp
 
 
 

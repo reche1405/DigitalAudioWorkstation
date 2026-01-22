@@ -6,6 +6,7 @@
 #include "QDebug"
 #include <thread>
 #include "../core/mixer.h"
+#include "../core/audiothreadpool.h"
 namespace Audio {
 
     class AudioEngine
@@ -21,7 +22,9 @@ namespace Audio {
             qDebug() << "Output channels: " << info.outputChannels;
 
         };
-        ~AudioEngine();
+        ~AudioEngine() {
+            m_dac.stopStream();
+        };
         bool openDevice(unsigned int id, unsigned int _sampleRate, unsigned int _bufferFrames);
         void closeStream();
         int processAudio(void* outputBuffer, void* inputBuffer, unsigned int nBufferFrames);
@@ -58,6 +61,7 @@ namespace Audio {
         Core::Mixer m_mixer;
         std::thread m_trackTrhead;
         std::thread m_masterMixTherad;
+        Core::AudioThreadPool m_threadPool;
 
     };
 }
