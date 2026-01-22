@@ -47,7 +47,7 @@ private:
     }
 
 public:
-
+    DoubleBuffer(size_t size) : m_capacity(size) {};
     // Write buffer logic for use in the audio engine thread.
 
     // Get a pointer the memory address of the write buffer to be filled.

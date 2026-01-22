@@ -71,6 +71,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         instruments/adsr.h instruments/adsr.cpp
         core/doublebuffer.h
         plans.md
+        core/audiodoublebuffer.h core/audiodoublebuffer.cpp
+        core/doublebuffer.cpp
 
 
 

@@ -42,8 +42,10 @@ namespace Audio {
         Core::Mixer& mixer() {return m_mixer;}
 
 
+        // Todo, implement the below on their own loops.
+        void trackLoop();
+        void mixMasterLoop();
 
-        void engineLoop();
 
     private:
         RtAudio m_dac;
@@ -54,7 +56,9 @@ namespace Audio {
         Core::Transport *m_transport;
         int m_debugCounter = 0;
         Core::Mixer m_mixer;
-        std::thread m_engineThread;
+        std::thread m_trackTrhead;
+        std::thread m_masterMixTherad;
+
     };
 }
 
