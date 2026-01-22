@@ -73,6 +73,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         plans.md
         core/audiodoublebuffer.h core/audiodoublebuffer.cpp
         core/doublebuffer.cpp
+        core/audiothreadpool.h core/audiothreadpool.cpp
 
 
 
