@@ -14,8 +14,8 @@ namespace Audio {
     public:
         AudioEngine() :
             m_ringBuffer(new Core::RingBuffer<float>(16384 * 2)),
-            m_transport(new Core::Transport()) {
-
+            m_transport(new Core::Transport())
+                {
             // Open the default output device and
             // If there is an error then print to the console.
             RtAudio::DeviceInfo info = m_dac.getDeviceInfo(1);

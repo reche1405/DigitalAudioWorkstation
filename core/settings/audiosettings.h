@@ -2,7 +2,9 @@
 #define AUDIOSETTINGS_H
 
 #include <cstddef>
+#include <stdexcept>
 #include <vector>
+#include <QDebug>
 namespace Core {
 
 class AudioSettings
@@ -13,6 +15,7 @@ public:
         return m_sampleRate;
     }
 
+    // Getters //
 
     size_t bufferSize() const {
         return m_bufferSize;
@@ -26,7 +29,6 @@ public:
         return bufferSizes;
     }
 
-    // TODO:: Implement the set sample rate and set buffer size functions.
     int getInputId () const {
         return inputDeviceId;
 
@@ -34,6 +36,34 @@ public:
     int getOutputId() const {
         return outputDeviceId;
     }
+    // Setters //
+
+    void setSampleRate(int id) {
+        try {
+            float newSampleRate = samplerates[id];
+            m_sampleRate = newSampleRate;
+        } catch(std::out_of_range& oor) {
+            qDebug() << "Unable to set sample rate.";
+        }
+        return;
+    }
+
+    void setBufferSize(int id) {
+        try {
+            size_t newBufferSize = bufferSizes[id];
+            m_bufferSize = newBufferSize;
+        }  catch(std::out_of_range& oor) {
+            qDebug() << "Unable to set sample rate.";
+        }
+        return;
+    }
+    void setInputDevice(int id) {
+        inputDeviceId = id;
+    }
+    void setOutputDeviceId(int id) {
+        outputDeviceId = id;
+    }
+
 
 private:
     std::vector<size_t> bufferSizes{128,256, 512, 1024, 2048};

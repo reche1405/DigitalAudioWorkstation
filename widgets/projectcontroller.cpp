@@ -125,7 +125,7 @@ void ProjectController::mixMasterBuffer(uint32_t numFrames) {
 void ProjectController::update() {
     size_t safetyMargin = 8192; // How many frames we want waiting in the pipe
     int safetyCounter = 0;
-    while ((m_audioEngine->ringBuffer().availableSamples() / 2) < safetyMargin && safetyCounter < 17) {
+    while ((m_audioEngine->ringBuffer().availableSamples() / 2) < safetyMargin || safetyCounter < 17) {
         mixMasterBuffer(512); // Process in blocks of 512
         safetyCounter++;
     }
