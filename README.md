@@ -6,7 +6,7 @@
 <h1>Digital Audio Workstation</h1>
 <p>An open-source, cross platform implementation of a
 Digital Audio Workstation, written in C++. Making use 
-the QT Applicationframework.</p>
+the QT application framework.</p>
 
 <h2>Audio Process Flow</h2>
 <p>Audio buffer size is set to n samples at a global level.
@@ -18,11 +18,17 @@ Each track owns a double buffer at size n.
 loop through all tracks, and push the task of adding the track
 data to a master buffer. </p>
 <p>Once all tracks have been mixed to the buffer, a mutex and conditional 
-is used to complete functionality where the master buffer is mixed (back in the main thread.
+is used to complete functionality where the master buffer is mixed (back in the main thread).
 </p>
 <p>The data is then pushed to the global ring buffer.</p>
 <p>The high priority audiocallback thread then pops data from the ring buffer
 to the applied output device.</p>
+<h2>Midi Process Flow</h2>
+<p>playback midi is parsed from two seperate places. with midi clips owning their own 
+clip manager, allowing them to pass events to instruments to generate audio, this is processed in 
+the mixer thread pool, for every block.</p>
+<p>In addition to that, midi is sent via midi messages from a project level midi dispatcher. </p>
+<p>This allows live midi recording, by pushing to the same track midi ring buffer that the midi clip manager pushes to.</p>
 <h2>Required Libraries</h2>
 
 <h3>Rt audio</h3>
