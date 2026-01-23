@@ -76,6 +76,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/audiothreadpool.h core/audiothreadpool.cpp
         core/settings/audiosettings.h core/settings/audiosettings.cpp
         core/settings/timesettings.h core/settings/timesettings.cpp
+        core/settings/themes.h core/settings/themes.cpp
 
 
 

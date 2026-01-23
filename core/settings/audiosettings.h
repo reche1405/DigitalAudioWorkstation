@@ -27,13 +27,24 @@ public:
     }
 
     // TODO:: Implement the set sample rate and set buffer size functions.
+    int getInputId () const {
+        return inputDeviceId;
+
+    }
+    int getOutputId() const {
+        return outputDeviceId;
+    }
 
 private:
     std::vector<size_t> bufferSizes{128,256, 512, 1024, 2048};
     std::vector<float> samplerates{44100.0f, 48000.0f, 96000.0f};
     // Defaults to 48000
     float m_sampleRate = samplerates[1];
+    // Defaults to 512
     size_t m_bufferSize = bufferSizes[2];
+    int inputDeviceId = 1;
+    int outputDeviceId = 1;
+
 };
 
 
