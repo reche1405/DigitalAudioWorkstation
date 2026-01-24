@@ -75,5 +75,17 @@ flowchart LR
 flowchart LR
 AudioCallback --> DoubleBufferRead--> ReadBuffers
 ```
+
+<h1>Plans <date>24/01/2026</date></h1>
+<p>
+Now that I have implemented an audio double buffer at a track level. We will need a
+clip manager level scratch buffer. This buffer will be the same size as the global buffer size.
+</p>
+<p>
+In the track process callback, we need to write to the scratch buffer, check with an atomic and a mutex
+if the buffer is full, then write that scratch buffer to the track level double buffer. At the clip manager level, 
+we are already now preparing the next scratch buffers information. The track then swaps the audio double buffer, 
+processes the buffer with the processing chain, then it is mixed to a master audio buffer structure.
+</p>
 </body>
 </html>
