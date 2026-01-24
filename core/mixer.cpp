@@ -17,20 +17,11 @@ void Mixer::addNewTrack(Core::TrackType type) {
     // And the above will be a make uniwue Audio::AudioTrack
 }
 
-void Mixer::mixMasterBuffer(size_t samplesToProcess, uint64_t writePos, uint32_t numFrames)
+void Mixer::mixMasterBuffer(Audio::AudioBuffer buffer)
 {
-
-        std::fill(m_masterBuffer.samples.begin(), m_masterBuffer.samples.begin() + samplesToProcess , 0.0f);
-    for (auto& t : m_tracks) {
-        std::fill(m_trackBuffer.samples.begin(), m_trackBuffer.samples.begin() + samplesToProcess , 0.0f);
-        // TODO: pass the current frame from this globaltimeline manager: URGENT
-        t->process(m_trackBuffer, writePos);
-
-        for(int i = 0; i < m_masterBuffer.size(); i++) {
-            m_masterBuffer.samples[i] += m_trackBuffer.samples[i];
-        }
-    }
-
+    size_t samplesToProcess = buffer.size();
+    size_t numFrames = samplesToProcess / 2;
+        m_masterBuffer = buffer;
     float leftGain = 0.5f;
     float rightGain = 0.5f;
 

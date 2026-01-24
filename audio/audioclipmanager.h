@@ -4,6 +4,7 @@
 #include <vector>
 #include "audiostructs.h"
 #include "../core/clipmanager.h"
+#include "../core/audiodoublebuffer.h"
 namespace Audio {
 
 class AudioClipManager : public Core::ClipManager

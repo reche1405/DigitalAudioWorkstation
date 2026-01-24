@@ -4,8 +4,7 @@
 #include <memory>
 #include "../core/track.h"
 #include "../audio/audionode.h"
-#include "audiothreadpool.h"
-#include "ringbuffer.h"
+
 
 #include <vector>
 namespace Core {
@@ -13,9 +12,7 @@ namespace Core {
 class Mixer
 {
 public:
-    Mixer(Core::RingBuffer<float>& buffer, Core::AudioThreadPool& pool) :
-        m_ringBuffer(buffer), m_threadPool(pool)
-    {
+    Mixer() {
 
         m_masterBuffer.init(2048, 0.0f);
         m_trackBuffer.init(2048, 0.0f);
@@ -26,13 +23,13 @@ public:
     void addNewAudioTrack();
     // void addNewMidiTrack();
     void addNewTrack(TrackType type = TrackType::Audio);
-    void mixMasterBuffer(size_t samplesToProcess, uint64_t writePos, uint32_t numFrames);
+    void mixMasterBuffer(Audio::AudioBuffer buffer);
     Audio::AudioBuffer masterBuffer() const {return m_masterBuffer;}
     std::vector<std::unique_ptr<Core::BaseTrack>>& tracks() {return m_tracks;}
 
+
+
 private:
-    Core::RingBuffer<float>& m_ringBuffer;
-    Core::AudioThreadPool& m_threadPool;
 
 
     Audio::AudioBuffer m_masterBuffer;

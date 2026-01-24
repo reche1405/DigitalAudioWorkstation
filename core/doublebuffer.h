@@ -36,7 +36,7 @@ private:
         readPos.store(0, std::memory_order_release);
     }
 
-    friend void swap(DoubleBuffer a, DoubleBuffer b) noexcept {
+    friend void swap(DoubleBuffer& a, DoubleBuffer& b) noexcept {
         using std::swap;
         swap(a.buffers, b.buffers);
         swap(a.readIndex, b.readIndex);
@@ -48,6 +48,13 @@ private:
 
 public:
     DoubleBuffer(size_t size) : m_capacity(size) {};
+
+    DoubleBuffer(const DoubleBuffer&) = delete;
+    DoubleBuffer& operator=(const DoubleBuffer&) = delete;
+
+    DoubleBuffer(DoubleBuffer&& other) {
+        swap(*this, other);
+    }
     // Write buffer logic for use in the audio engine thread.
 
     // Get a pointer the memory address of the write buffer to be filled.

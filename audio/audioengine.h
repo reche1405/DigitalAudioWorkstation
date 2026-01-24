@@ -27,7 +27,7 @@ namespace Audio {
         };
         bool openDevice(unsigned int id, unsigned int _sampleRate, unsigned int _bufferFrames);
         void closeStream();
-        int processAudio(void* outputBuffer, void* inputBuffer, unsigned int nBufferFrames);
+        int writeToBuffer(void* outputBuffer, void* inputBuffer, unsigned int nBufferFrames);
 
         void renderIntoBuffer(float* buffer, uint32_t chunk, int64_t startFrame);
 
@@ -38,7 +38,7 @@ namespace Audio {
 
 
         void addNewTrack(Core::TrackType type = Core::TrackType::Audio);
-        void mixMasterBuffer(uint32_t numFrames);
+        void mixMasterBuffer(uint32_t bufferSize);
 
         Core::Transport& transport() const {return *m_transport;}
         Core::RingBuffer<float>& ringBuffer() const {return *m_ringBuffer;}
@@ -59,9 +59,10 @@ namespace Audio {
         Core::Transport *m_transport;
         int m_debugCounter = 0;
         Core::Mixer m_mixer;
-        std::thread m_trackTrhead;
-        std::thread m_masterMixTherad;
         Core::AudioThreadPool m_threadPool;
+
+        std::atomic<bool> needsMix{false};
+        std::mutex mixMutex;
 
     };
 }

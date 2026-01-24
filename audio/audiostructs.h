@@ -15,7 +15,7 @@ namespace Audio {
         int size() const {
             return samples.size();
         }
-        void init(int size, float defValue) {
+        void init(int size = 512, float defValue = 0.0f) {
             setSize(size);
             setDefault(defValue);
         }
@@ -23,11 +23,13 @@ namespace Audio {
             samples.resize(size);
         }
         void setDefault(float value) {
-            std::fill(samples.begin(), samples.end(), 0.0f);
+            std::fill(samples.begin(), samples.end(), value);
         }
         float* data() {
             return samples.data();
         }
+
+
 
     };
 
