@@ -12,6 +12,10 @@ class AudioClipManager : public Core::ClipManager
 private:
     std::vector<AudioClip> m_clips;
     uint32_t m_projectSampleRate = 44100;
+    std::vector<float> m_scratchBuffer;
+    std::atomic<bool> m_bufferReady{false};
+    size_t m_scratchBufferSize{0};
+    int m_numChannels{2};
 public:
     AudioClipManager();
     void addClip(AudioClip clip) {
@@ -25,8 +29,14 @@ public:
     void setLocalStartFrame(AudioClip clip, size_t localStart);
     void setLocalEndFrame(AudioClip clip, size_t endFrame);
     void process(AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels);
-    void mixClipToBuffer(const AudioClip& clip, AudioBuffer& buffer, size_t bufferOffset, size_t assetStartFrame, int numChannels);
+    void mixClipToBuffer(const AudioClip& clip, size_t bufferOffset, size_t assetStartFrame, int numChannels);
     void prepare(uint32_t sampleRate) override {m_projectSampleRate = sampleRate;};
+
+    void prepare(int numChannels, size_t bufferSize, uint32_t sampleRate);
+    void localProcess(size_t currentGlobalFrame,int numChannels, size_t framesToProcess);
+    void toTrackBuffer(float* trackBuffer, size_t size);
+    bool isBufferReady() const {return m_bufferReady.load();}
+    void markBufferConsumed() {m_bufferReady.store(false);}
 };
 
 } // namespace Audio

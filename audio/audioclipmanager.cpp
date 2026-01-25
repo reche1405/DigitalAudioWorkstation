@@ -5,35 +5,56 @@ namespace Audio {
 
 AudioClipManager::AudioClipManager() {}
 
-void AudioClipManager::process(AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels) {
-    size_t bufferSizeFrames = buffer.size() / numChannels;
-    // TODO: Implement a clip counter and order them by globalStartFrame.
-    // Rather than add aclip counter that incrememnts, I have sorted the clips by their start time when a clip is added.
-    // TODO: We will now need to add the m_nextPotentialClipIndex
-    // TODO: And add a seek function so that when the user stops the song or moves the playhead,
-    // TODO: The value is set to zero, so all samples can be inspected to find the next source.
+
+void AudioClipManager::prepare(int numChannels, size_t bufferSize, uint32_t sampleRate)
+{
+    m_numChannels = numChannels;
+    m_projectSampleRate = sampleRate;
+    size_t requiredSize = bufferSize * numChannels;
+    if(m_scratchBuffer.size() < requiredSize) {
+        m_scratchBuffer.resize(requiredSize, 0.0f);
+        m_scratchBufferSize = requiredSize;
+    }
+}
+
+void AudioClipManager::localProcess(size_t currentGlobalFrame, int numChannels, size_t framesToProcess)
+{
+    std::fill(m_scratchBuffer.begin(), m_scratchBuffer.begin() + (framesToProcess * numChannels), 0.0f);
 
     Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
 
-    size_t globalEndFrame = currentGlobalFrame + bufferSizeFrames;
+    size_t globalEndFrame = currentGlobalFrame + framesToProcess;
     for(const auto& clip : m_clips) {
 
         size_t clipEndFrame = manager.getGlobalEndFrame(clip);
         size_t clipGlobalStartFrame = manager.getGlobalStartFrame(clip);
         if(clipGlobalStartFrame < globalEndFrame && clipEndFrame > currentGlobalFrame) {
             size_t bufferOffset = (clipGlobalStartFrame > currentGlobalFrame)
-                                      ? clipGlobalStartFrame - currentGlobalFrame : 0;
+            ? clipGlobalStartFrame - currentGlobalFrame : 0;
             size_t clipReadOffset = (currentGlobalFrame > clipGlobalStartFrame)
-                                      ? currentGlobalFrame - clipGlobalStartFrame : 0;
+                                        ? currentGlobalFrame - clipGlobalStartFrame : 0;
 
             size_t assetStartFrame = clipGlobalStartFrame + clipReadOffset;
-            mixClipToBuffer(clip, buffer, bufferOffset, assetStartFrame, numChannels);
+            mixClipToBuffer(clip, bufferOffset, assetStartFrame, numChannels);
         }
 
     }
-};
 
-void AudioClipManager::mixClipToBuffer(const AudioClip& clip, AudioBuffer& buffer,
+}
+
+void AudioClipManager::toTrackBuffer(float *trackBuffer, size_t size)
+{
+    if(!m_bufferReady) {
+        return;
+    }
+    size_t copySize = std::min(size, m_scratchBufferSize);
+    std::memcpy(trackBuffer, m_scratchBuffer.data(), copySize * sizeof(float));
+
+    markBufferConsumed();
+}
+
+
+void AudioClipManager::mixClipToBuffer(const AudioClip& clip,
         size_t bufferOffset, size_t assetStart, int numChannels) {
     Core::MusicTimeManager& manager = Core::MusicTimeManager::instance();
     const auto& samples = clip.asset->audioData->samples;
@@ -41,7 +62,7 @@ void AudioClipManager::mixClipToBuffer(const AudioClip& clip, AudioBuffer& buffe
 
     double ratio = static_cast<double>(clip.asset->sampleRate) / static_cast<double>(m_projectSampleRate);
 
-    size_t bufferFrames = buffer.size() / numChannels;
+    size_t bufferFrames = m_scratchBufferSize / numChannels;
     size_t framesToProcess = bufferFrames - bufferOffset;
 
     for(size_t f=0; f < framesToProcess; ++f) {
@@ -60,8 +81,15 @@ void AudioClipManager::mixClipToBuffer(const AudioClip& clip, AudioBuffer& buffe
 
             float interpolated = Core::Math::lerp(sA, sB, fraction);
 
-            buffer.samples[(bufferOffset + f) * numChannels + ch] += interpolated;
+            m_scratchBuffer[(bufferOffset + f) * numChannels + ch] += interpolated;
+            // m_bufferReady.store(true);
         }
     }
 }
+
+ void AudioClipManager::process(AudioBuffer& buffer, size_t currentGlobalFrame, int numChannels) {
+
+};
+
+
 } // namespace Audio

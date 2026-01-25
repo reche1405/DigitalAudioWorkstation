@@ -7,8 +7,7 @@ namespace Audio {
 
     //GlobalSampleManager::GlobalSampleManager() {}
 
-
-    void AudioAssetManager::plotVisualisation(std::shared_ptr<AudioAsset> asset) {
+void AudioAssetManager::plotVisualisation(std::shared_ptr<AudioAsset> asset) {
         int desiredRes = 200;
         int channels = asset->channels;
         asset->visualWavePoints.plots.resize(channels);

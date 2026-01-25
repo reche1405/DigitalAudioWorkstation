@@ -78,6 +78,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         core/settings/timesettings.h core/settings/timesettings.cpp
         core/settings/themes.h core/settings/themes.cpp
         README.md
+        core/settings/settings.h core/settings/settings.cpp
 
 
 

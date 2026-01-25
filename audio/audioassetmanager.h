@@ -15,16 +15,9 @@ namespace Audio {
 class AudioAssetManager : public Core::ProjectAssetManager
     {
     private:
-        std::vector<float> m_scratchBuffer;
-        std::atomic<bool> m_bufferReady{false};
-        int m_scratchBufferSize{0};
-        int m_numChannels{2};
+
     public:
-        void prepare(int numChannels, int bufferSize);
-        void localProcess(size_t currentGlobalFrame,int numChannels, size_t framesToProcess);
-        void toTrackBuffer(float* trackBuffer, size_t size);
-        bool isBufferReady() const {return m_bufferReady.load();}
-        void markBufferConsumed() {m_bufferReady.store(false);}
+
         virtual ~AudioAssetManager() = default;
 
         /**

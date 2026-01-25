@@ -4,8 +4,8 @@
 #include "../core/transport.h"
 #include "RtAudio.h"
 #include "QDebug"
-#include <thread>
 #include "../core/mixer.h"
+#include "../core/settings/settings.h"
 #include "../core/audiothreadpool.h"
 namespace Audio {
 

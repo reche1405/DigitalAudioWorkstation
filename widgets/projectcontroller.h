@@ -5,7 +5,7 @@
 #include <QGraphicsView>
 #include <QGraphicsWidget>
 #include "../graphics/arrangementview.h"
-#include "../core/mixer.h"
+#include "../core/settings/settings.h"
 #include "../audio/audioassetmanager.h"
 #include "../audio/audioengine.h"
 #include "../graphics/globalscene.h"
@@ -68,7 +68,7 @@ private:
     size_t m_currentPlayheadFrame = 0;
     double m_visualX = 0.0;
     Graphics::Playhead *m_playhead;
-
+    Core::Settings *settings;
     // std::vector<float> m_masterBuffer;
     // std::vector<float> m_trackBuffer;
     // std::vector<std::unique_ptr<Audio::BaseTrack>> m_tracks;
