@@ -15,6 +15,7 @@ void AudioTrack::process(AudioBuffer& buffer, size_t playheadFrame) {
     int numChannels = 2;
     // Get the sampler to fill the buffer with data
     m_sampler.process(buffer, playheadFrame, numChannels);
+    m_audioBuffer.processBlock([this] )
 
     m_chain.process(buffer);
     for(size_t i = 0; i < buffer.size(); i+= numChannels ) {
