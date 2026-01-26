@@ -9,7 +9,7 @@ namespace Core {
 
 template<typename T>
 class DoubleBuffer {
-private:
+protected:
     // Both the read and write buffers.
     std::array<T*, 2> buffers;
     // The index of the read buffer in the above structure.
@@ -30,15 +30,20 @@ private:
     // whichever buffer used to be the write buffer.
     void swapBuffer() noexcept {
         int readIdx = readIndex.load(std::memory_order_acquire);
-        int newIdx = (readIdx + 1) % 2;
-        readIndex.store(readIdx, std::memory_order_release);
+        int writeIdx = writeIndex.load(std::memory_order_acquire);
+
+        readIndex.store(writeIdx, std::memory_order_release);
+        writeIndex.store(readIdx, std::memory_order_release);
+
 
         readPos.store(0, std::memory_order_release);
+        writePos.store(0, std::memory_order_release);
     }
 
 
 public:
-    DoubleBuffer(size_t size) : m_capacity(size) {};
+    DoubleBuffer(size_t size) : m_capacity(size) {
+    };
 
     DoubleBuffer(const DoubleBuffer&) = delete;
     DoubleBuffer& operator=(const DoubleBuffer&) = delete;
@@ -77,12 +82,13 @@ public:
     // Commits the written block and switches the write buffer index if necessary.
     void commitWrite() noexcept {
         writePos.store(0, std::memory_order_release);
-
+        readPos.store(0, std::memory_order_release);
         int writeIdx = writeIndex.load(std::memory_order_acquire);
-        int readIdx = readPos.load(std::memory_order_acquire);
-        if (writeIdx != readIdx) {
-            int newWriteIdx = (writeIdx + 1) % 2;
-            writeIndex.store(newWriteIdx, std::memory_order_release);
+        int readIdx = readIndex.load(std::memory_order_acquire);
+        if (writeIdx == readIdx) {
+
+            writeIndex.store(readIdx, std::memory_order_release);
+            readIndex.store(writeIdx, std::memory_order_release);
         }
     }
 
@@ -107,15 +113,10 @@ public:
     // Returns the current sample for the read buffer, swaps buffer if the read position reaches capacity.
     T readSample() noexcept {
         size_t posSnapshot = readPos.load(std::memory_order_relaxed);
-        T sample = buffers[readIndex.load(std::memory_order_acquire)];
+        T sample = buffers[readIndex.load(std::memory_order_acquire)][posSnapshot];
         readPos.store(posSnapshot + 1, std::memory_order_release);
 
         //TODO:: Implement swap buffers helper function.
-
-        if(readPos >= m_capacity) {
-
-            swapBuffer();
-        }
         return sample;
     }
 
@@ -125,10 +126,6 @@ public:
         std::copy_n(buffers[idx] + pos, count, output);
 
         readPos.store(pos + count, std::memory_order_release);
-        if(readPos >= m_capacity) {
-
-            swapBuffer();
-        }
     }
 
     bool isNewDataAvailable() const noexcept {

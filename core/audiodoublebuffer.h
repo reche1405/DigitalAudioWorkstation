@@ -15,7 +15,10 @@ public:
     void processBlock(Processor&& processor) {
         float* writeBuffer = getWriteBuffer();
         processor(writeBuffer, capacity());
-        commitWrite();
+        if(getAvailableReadSamples() == 0 && isNewDataAvailable()) {
+
+            commitWrite();
+        }
     }
 };
 

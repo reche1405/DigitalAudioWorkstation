@@ -15,6 +15,7 @@ void AudioTrack::process(size_t playheadFrame) {
     size_t bufferFrames = m_audioBuffer.capacity() / 2;
     // Get the sampler to fill the buffer with data
     m_sampler.localProcess(playheadFrame, numChannels, bufferFrames);
+
     m_audioBuffer.processBlock([this](float* data, size_t size) {
         m_sampler.toTrackBuffer(data, size);
 

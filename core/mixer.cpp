@@ -20,10 +20,9 @@ void Mixer::addNewTrack(Core::TrackType type) {
 float* Mixer::mixMasterBuffer(size_t numFrames)
 {
     size_t samplesToProcess = numFrames * m_nMasterChannels;
-    std::vector<float> trackBuffer;
-    trackBuffer.resize(samplesToProcess);
+
     float *destData = m_masterBuffer.samples.data();
-    float *srcData = trackBuffer.data();
+    float *srcData = m_trackBuffer.samples.data();
     for(auto& track : m_tracks) {
         track->mixToMaster(srcData, destData, numFrames);
     }

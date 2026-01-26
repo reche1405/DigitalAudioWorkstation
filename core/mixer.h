@@ -14,8 +14,8 @@ class Mixer
 public:
     Mixer() {
 
-        m_masterBuffer.init(2048, 0.0f);
-        m_trackBuffer.init(2048, 0.0f);
+        m_masterBuffer.init(1024, 0.0f);
+        m_trackBuffer.init(1024, 0.0f);
     }
     ~Mixer() = default;
 
@@ -25,7 +25,7 @@ public:
     void addNewTrack(TrackType type = TrackType::Audio);
     void mixMasterBuffer(Audio::AudioBuffer buffer);
     Audio::AudioBuffer masterBuffer() const {return m_masterBuffer;}
-    std::vector<std::unique_ptr<Core::BaseTrack>>& tracks() {return m_tracks;}
+    std::vector<std::unique_ptr<Core::BaseTrack>> &tracks() {return m_tracks;}
 
 
 

@@ -27,7 +27,7 @@ namespace Audio {
         };
         bool openDevice(unsigned int id, unsigned int _sampleRate, unsigned int _bufferFrames);
         void closeStream();
-        int writeToBuffer(void* outputBuffer, void* inputBuffer, unsigned int nBufferFrames);
+        int readFromBuffer(void* outputBuffer, void* inputBuffer, unsigned int nBufferFrames);
 
         void renderIntoBuffer(float* buffer, uint32_t chunk, int64_t startFrame);
 

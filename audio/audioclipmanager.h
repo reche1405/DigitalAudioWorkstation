@@ -14,7 +14,7 @@ private:
     uint32_t m_projectSampleRate = 48000;
     std::vector<float> m_scratchBuffer;
     std::atomic<bool> m_bufferReady{false};
-    size_t m_scratchBufferSize{0};
+    size_t m_scratchBufferSize{1024};
     int m_numChannels{2};
 public:
     AudioClipManager();

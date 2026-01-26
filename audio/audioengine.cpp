@@ -8,7 +8,7 @@ namespace Audio {
                                  double srteamTime, RtAudioStreamStatus status, void *userData) {
 
         AudioEngine *engine = static_cast<AudioEngine*>(userData);
-        return engine->writeToBuffer(outputBuffer, inputBuffer, nBufferFrames);
+        return engine->readFromBuffer(outputBuffer, inputBuffer, nBufferFrames);
     }
 
 
@@ -34,7 +34,7 @@ namespace Audio {
 
 
 
-    int AudioEngine::writeToBuffer(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames) {
+    int AudioEngine::readFromBuffer(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames) {
         if (!m_transport) return 0; // Essential safety check!
         float *buffer = static_cast<float*>(outputBuffer);
         unsigned int framesToProcess = nBufferFrames * 2;
@@ -61,25 +61,17 @@ namespace Audio {
         int64_t writePos = playhead + waiting;
         size_t nSamples = bufferSize * 2;
         std::atomic tracksComplete{0};
-        std::condition_variable cv;
-        std::mutex mtx;
-        auto& tracks = m_mixer.tracks();
+        auto &tracks = m_mixer.tracks();
         int trackCount = tracks.size();
         for (auto &track : tracks) {
-            m_threadPool.enqueue([&track, &tracksComplete, &cv, &mtx, &writePos, &trackCount]() {
+            m_threadPool.enqueue([&track, &tracksComplete, &writePos, &trackCount]() {
                 track->process(writePos);
 
-                std::lock_guard lock(mtx);
-                if(++tracksComplete == trackCount) {
-                    cv.notify_one();
-                }
             });
+            tracksComplete.fetch_add(1, std::memory_order_release);
         }
-        {
-            std::unique_lock lock(mtx);
-            cv.wait_for(lock,std::chrono::milliseconds(5), [&tracksComplete, &trackCount]() {
-                return tracksComplete == trackCount;
-            });
+        while (tracksComplete.load(std::memory_order_acquire) < trackCount) {
+            std::this_thread::yield(); // Simple spin-wait for low latency
         }
         float* blockData = m_mixer.mixMasterBuffer(nSamples);
 

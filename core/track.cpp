@@ -10,7 +10,7 @@ void BaseTrack::setName(std::string name) {
 
 void BaseTrack::mixToMaster(float* src, float* dest, size_t numFrames)
 {
-    m_audioBuffer.readBlock(src, numFrames * 2);
+    m_audioBuffer.readBlock(src, numFrames);
 
     for(size_t i = 0; i< numFrames; i++) {
         dest[i] += src[i];

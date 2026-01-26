@@ -28,11 +28,10 @@ AudioThreadPool::AudioThreadPool(size_t threads) {
 
 void AudioThreadPool::enqueue(std::function<void ()> task)
 {
-    {
-    std::lock_guard lock(queueMutex);
+
     tasks.push(std::move(task));
-    }
-    conditional.notify_one();
+
+
 }
 
 } // namespace Core
