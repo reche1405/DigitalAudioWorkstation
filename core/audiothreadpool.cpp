@@ -1,8 +1,10 @@
 #include "audiothreadpool.h"
+#include <qdebug.h>
 
 namespace Core {
 
 AudioThreadPool::AudioThreadPool(size_t threads) {
+    qDebug() << "Total threads" << (threads);
     for(size_t i =0; i < threads; ++i) {
         // Generate a worker for every thread.
         workers.emplace_back([this] {

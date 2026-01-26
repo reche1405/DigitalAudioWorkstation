@@ -87,5 +87,9 @@ if the buffer is full, then write that scratch buffer to the track level double 
 we are already now preparing the next scratch buffers information. The track then swaps the audio double buffer, 
 processes the buffer with the processing chain, then it is mixed to a master audio buffer structure.
 </p>
+<h1>Plans <date>25/01/2026</date></h1>
+<p>We have made progress implementing the double buffer and a scratch buffer to write to the global ring buffer. 
+There is still a blocking process somewhere in the audiothreadpool enqueue funtion. the segfault error takes place 
+exactly when a new task is enqueued.
 </body>
 </html>

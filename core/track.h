@@ -15,18 +15,22 @@ protected:
     Core::Pan m_pan;
     Audio::ProcessChain m_chain;
     Core::TrackType m_type;
-    AudioDoubleBuffer m_audioBuffer{256};
+    size_t m_bufferSize{512};
+    AudioDoubleBuffer m_audioBuffer{m_bufferSize};
+
 
 public:
     BaseTrack() :
         m_id(Core::IdManager::instance().generateId())
     {};
     virtual ~BaseTrack() {};
-    virtual void process(Audio::AudioBuffer& buffer, size_t playheadFrame) = 0;
+    virtual void process(size_t playheadFrame) = 0;
     void addEffect(std::unique_ptr<Audio::AudioNode> effect);
     void setName(std::string newName);
     Core::ID& id() const { return m_id; }
     Core::TrackType type() const {return m_type; }
+    AudioDoubleBuffer& audioBuffer() {return m_audioBuffer;}
+    void mixToMaster(float* src, float* dest, size_t numFrames);
 };
 
 } // namespace Core

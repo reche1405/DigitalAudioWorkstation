@@ -3,8 +3,5 @@
 
 namespace Core {
 
-Themes::Themes() {
-
-}
 
 } // namespace Core

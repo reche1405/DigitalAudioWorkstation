@@ -18,7 +18,7 @@ private:
     std::condition_variable conditional;
     bool stop = false;
 public:
-    AudioThreadPool(size_t threads = std::thread::hardware_concurrency() - 2);
+    AudioThreadPool(size_t threads = std::thread::hardware_concurrency() - 8);
     ~AudioThreadPool() {
         {
             std::lock_guard lock(queueMutex);

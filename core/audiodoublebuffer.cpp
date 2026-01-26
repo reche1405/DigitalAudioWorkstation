@@ -2,6 +2,5 @@
 
 namespace Core {
 
-AudioDoubleBuffer::AudioDoubleBuffer() {}
 
 } // namespace Core

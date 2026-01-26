@@ -11,7 +11,7 @@ class AudioClipManager : public Core::ClipManager
 {
 private:
     std::vector<AudioClip> m_clips;
-    uint32_t m_projectSampleRate = 44100;
+    uint32_t m_projectSampleRate = 48000;
     std::vector<float> m_scratchBuffer;
     std::atomic<bool> m_bufferReady{false};
     size_t m_scratchBufferSize{0};

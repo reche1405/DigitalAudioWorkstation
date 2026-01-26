@@ -13,7 +13,7 @@ namespace Audio {
     {
     public:
         AudioEngine() :
-            m_ringBuffer(new Core::RingBuffer<float>(16384 * 2)),
+            m_ringBuffer(new Core::RingBuffer<float>(16384)),
             m_transport(new Core::Transport())
                 {
             // Open the default output device and
@@ -38,7 +38,7 @@ namespace Audio {
 
 
         void addNewTrack(Core::TrackType type = Core::TrackType::Audio);
-        void mixMasterBuffer(uint32_t bufferSize);
+        void mixMasterBuffer(size_t bufferSize);
 
         Core::Transport& transport() const {return *m_transport;}
         Core::RingBuffer<float>& ringBuffer() const {return *m_ringBuffer;}

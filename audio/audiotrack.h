@@ -17,7 +17,7 @@ private:
 
         AudioTrack();
         virtual ~AudioTrack() = default;
-        void process(AudioBuffer& buffer, size_t playheadFrame) override;
+        void process(size_t playheadFrame) override;
         AudioClipManager& getSampler() {return m_sampler;}
 
 

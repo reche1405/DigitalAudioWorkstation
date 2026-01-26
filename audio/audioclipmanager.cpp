@@ -39,6 +39,7 @@ void AudioClipManager::localProcess(size_t currentGlobalFrame, int numChannels, 
         }
 
     }
+    m_bufferReady.store(true);
 
 }
 
@@ -82,7 +83,7 @@ void AudioClipManager::mixClipToBuffer(const AudioClip& clip,
             float interpolated = Core::Math::lerp(sA, sB, fraction);
 
             m_scratchBuffer[(bufferOffset + f) * numChannels + ch] += interpolated;
-            // m_bufferReady.store(true);
+
         }
     }
 }

@@ -53,25 +53,21 @@ namespace Audio {
         m_mixer.addNewTrack(type);
     }
 
-    void AudioEngine::mixMasterBuffer(uint32_t bufferSize)
+    void AudioEngine::mixMasterBuffer(size_t bufferSize)
     {
-        if(!m_transport->isPlaying()) {
-            return;
-        }
+
         int64_t playhead = m_transport->getCurrentFrame();
         int64_t waiting = m_ringBuffer->availableSamples() / 2;
         int64_t writePos = playhead + waiting;
         size_t nSamples = bufferSize * 2;
-        Audio::AudioBuffer buffer;
-        buffer.init();
         std::atomic tracksComplete{0};
         std::condition_variable cv;
         std::mutex mtx;
         auto& tracks = m_mixer.tracks();
         int trackCount = tracks.size();
         for (auto &track : tracks) {
-            m_threadPool.enqueue([&track, &tracksComplete, &cv, &mtx, &nSamples, &writePos, &buffer, &trackCount]() {
-                track->process(buffer,writePos);
+            m_threadPool.enqueue([&track, &tracksComplete, &cv, &mtx, &writePos, &trackCount]() {
+                track->process(writePos);
 
                 std::lock_guard lock(mtx);
                 if(++tracksComplete == trackCount) {
@@ -81,18 +77,16 @@ namespace Audio {
         }
         {
             std::unique_lock lock(mtx);
-            cv.wait_for(lock,std::chrono::milliseconds(10), [&tracksComplete, &trackCount]() {
+            cv.wait_for(lock,std::chrono::milliseconds(5), [&tracksComplete, &trackCount]() {
                 return tracksComplete == trackCount;
             });
         }
-        m_mixer.mixMasterBuffer(buffer);
-
-
+        float* blockData = m_mixer.mixMasterBuffer(nSamples);
 
         // 4. Push to Ring Buffer
         // We try to push the entire block. If it returns less than numFrames*2,
         // it means the ring buffer is full (the audio engine is falling behind).
-        size_t pushed = m_ringBuffer->pushBlock(m_mixer.masterBuffer().data(), bufferSize);
+        size_t pushed = m_ringBuffer->pushBlock(blockData, nSamples);
 
     }
 

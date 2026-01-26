@@ -17,23 +17,28 @@ void Mixer::addNewTrack(Core::TrackType type) {
     // And the above will be a make uniwue Audio::AudioTrack
 }
 
-void Mixer::mixMasterBuffer(Audio::AudioBuffer buffer)
+float* Mixer::mixMasterBuffer(size_t numFrames)
 {
-    size_t samplesToProcess = buffer.size();
-    size_t numFrames = samplesToProcess / 2;
-        m_masterBuffer = buffer;
-    float leftGain = 0.5f;
-    float rightGain = 0.5f;
-
-    for (uint32_t i = 0; i < numFrames; ++i) {
-        // Interleaved L/R
-        m_masterBuffer.samples[i * 2]     *= leftGain;  // Left
-        m_masterBuffer.samples[i * 2 + 1] *= rightGain; // Right
-
-        // Hard Limiter (Simple protection)
-        m_masterBuffer.samples[i * 2]     = std::clamp(m_masterBuffer.samples[i * 2], -1.0f, 1.0f);
-        m_masterBuffer.samples[i * 2 + 1] = std::clamp(m_masterBuffer.samples[i * 2 + 1], -1.0f, 1.0f);
+    size_t samplesToProcess = numFrames * m_nMasterChannels;
+    std::vector<float> trackBuffer;
+    trackBuffer.resize(samplesToProcess);
+    float *destData = m_masterBuffer.samples.data();
+    float *srcData = trackBuffer.data();
+    for(auto& track : m_tracks) {
+        track->mixToMaster(srcData, destData, numFrames);
     }
+    // float leftGain = 0.5f;
+    // float rightGain = 0.5f;
 
+    // for (uint32_t i = 0; i < numFrames; ++i) {
+    //     // Interleaved L/R
+    //     m_masterBuffer.samples[i * 2]     *= leftGain;  // Left
+    //     m_masterBuffer.samples[i * 2 + 1] *= rightGain; // Right
+
+    //     // Hard Limiter (Simple protection)
+    //     m_masterBuffer.samples[i * 2]     = std::clamp(m_masterBuffer.samples[i * 2], -1.0f, 1.0f);
+    //     m_masterBuffer.samples[i * 2 + 1] = std::clamp(m_masterBuffer.samples[i * 2 + 1], -1.0f, 1.0f);
+    // }
+    return destData;
 }
 } // namespace Core

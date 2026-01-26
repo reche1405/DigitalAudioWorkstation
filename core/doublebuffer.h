@@ -36,15 +36,6 @@ private:
         readPos.store(0, std::memory_order_release);
     }
 
-    friend void swap(DoubleBuffer& a, DoubleBuffer& b) noexcept {
-        using std::swap;
-        swap(a.buffers, b.buffers);
-        swap(a.readIndex, b.readIndex);
-        swap(a.writeIndex, b.writeIndex);
-        swap(a.readPos, b.readPos);
-        swap(a.writePos, b.writePos);
-        swap(a.m_capacity, b.m_capacity);
-    }
 
 public:
     DoubleBuffer(size_t size) : m_capacity(size) {};
@@ -164,6 +155,7 @@ public:
     }
 
     size_t capacity() const noexcept {return m_capacity; }
+   // bool advance() {return }
 
 
 

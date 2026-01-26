@@ -19,7 +19,7 @@ public:
     }
     ~Mixer() = default;
 
-    void mixMasterBuffer(uint32_t numFrames);
+    float *mixMasterBuffer(size_t numFrames);
     void addNewAudioTrack();
     // void addNewMidiTrack();
     void addNewTrack(TrackType type = TrackType::Audio);
@@ -31,7 +31,7 @@ public:
 
 private:
 
-
+    int m_nMasterChannels = 2;
     Audio::AudioBuffer m_masterBuffer;
     Audio::AudioBuffer m_trackBuffer;
     std::vector<std::unique_ptr<Core::BaseTrack>> m_tracks;
